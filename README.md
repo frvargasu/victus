@@ -7,4 +7,4 @@ Bienvenido a **Victus**, una aplicación móvil desarrollada con **Ionic** y **A
 - Integración con **Capacitor** para acceso a funcionalidades nativas.
 - Diseño optimizado con **Ionic UI Components**.
 
-## 📂 Estructura del proyecto
+
