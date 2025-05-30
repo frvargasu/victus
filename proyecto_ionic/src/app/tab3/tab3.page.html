@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Menú</ion-title>
+    <ion-title>Menu</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,7 +8,7 @@
   <ng-container *ngIf="!isLoggedIn; else usuarioMenu">
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Iniciar Sesión</ion-card-title>
+        <ion-card-title>Iniciar Sesion</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <form (ngSubmit)="login()">
@@ -20,10 +20,10 @@
             <ion-label position="floating">Contraseña</ion-label>
             <ion-input type="password" [(ngModel)]="loginData.password" name="loginPassword" required></ion-input>
           </ion-item>
-          <ion-button expand="block" type="submit" color="primary">Iniciar Sesión</ion-button>
+          <ion-button expand="block" type="submit" color="primary">Iniciar Sesion</ion-button>
         </form>
         <ion-button expand="block" fill="clear" (click)="showRegister = !showRegister">
-          ¿No tienes cuenta? Regístrate
+          ¿No tienes cuenta? Registrate
         </ion-button>
       </ion-card-content>
     </ion-card>
@@ -72,7 +72,7 @@
       </ion-item>
       <ion-item (click)="logout()">
         <ion-icon name="log-out-outline" slot="start"></ion-icon>
-        <ion-label>Cerrar Sesión</ion-label>
+        <ion-label>Cerrar Sesion</ion-label>
       </ion-item>
     </ion-list>
   </ng-template>
