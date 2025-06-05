@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CarritoService, Producto } from '../services/carrito.service';
 
 @Component({
@@ -56,7 +57,7 @@ export class Tab1Page {
     }
   ];
 
-  constructor(public carritoService: CarritoService) {}
+  constructor(public carritoService: CarritoService, private router: Router) {}
 
   agregarProducto(producto: Producto) {
     this.carritoService.agregarAlCarrito(producto);
@@ -64,5 +65,9 @@ export class Tab1Page {
 
   obtenerCantidadCarrito(): number {
     return this.carritoService.obtenerCantidadTotal();
+  }
+
+  irADetalleProducto(nombre: string) {
+    this.router.navigate(['/detalle-producto', { nombre }]);
   }
 }

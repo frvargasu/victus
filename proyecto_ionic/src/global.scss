@@ -35,3 +35,18 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+@import 'animate.css';
+
+div.animate__animated {
+  background: #007aff;
+  padding: 14px 0;
+  text-align: center;
+  margin: 14px 0 0 0;
+}
+
+span {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 1px;
+}
