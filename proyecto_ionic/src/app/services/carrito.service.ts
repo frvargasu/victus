@@ -4,31 +4,33 @@ export interface Producto {
   nombre: string;
   imagen: string;
   precio: number;
-  cantidad?: number;
+  cantidad?: number; // Cantidad opcional
 }
 
 @Injectable({ providedIn: 'root' })
 export class CarritoService {
   private carrito: Producto[] = [];
 
-  obtenerCarrito() {
+  obtenerCarrito(): Producto[] {
     return this.carrito;
   }
 
-  agregarAlCarrito(producto: Producto) {
+  agregarAlCarrito(producto: Producto): void {
     const encontrado = this.carrito.find(p => p.nombre === producto.nombre);
     if (encontrado) {
-      encontrado.cantidad! += 1;
+      // Aseguramos que cantidad no sea undefined
+      encontrado.cantidad = (encontrado.cantidad || 0) + 1;
     } else {
       this.carrito.push({ ...producto, cantidad: 1 });
     }
   }
 
-  quitarDelCarrito(nombre: string) {
+  quitarDelCarrito(nombre: string): void {
     const idx = this.carrito.findIndex(p => p.nombre === nombre);
     if (idx > -1) {
-      if (this.carrito[idx].cantidad! > 1) {
-        this.carrito[idx].cantidad!--;
+      const producto = this.carrito[idx];
+      if ((producto.cantidad || 0) > 1) {
+        producto.cantidad = (producto.cantidad || 0) - 1;
       } else {
         this.carrito.splice(idx, 1);
       }
@@ -40,6 +42,6 @@ export class CarritoService {
   }
 
   obtenerTotal(): number {
-    return this.carrito.reduce((acc, p) => acc + (p.precio * (p.cantidad || 0)), 0);
+    return this.carrito.reduce((acc, p) => acc + p.precio * (p.cantidad || 0), 0);
   }
 }

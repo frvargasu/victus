@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
     <ion-title>Carrito</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,23 +22,19 @@
         <ion-button size="small" (click)="agregarProducto(producto)">+</ion-button>
       </ion-item>
     </ion-list>
-    <div style="text-align: right; font-weight: bold; margin: 18px;">
-      Total: ${{ obtenerTotal() }}
+    <div class="carrito-total">
+     <p> Total: ${{ obtenerTotal() }}</p>
     </div>
-    <ion-button expand="block" color="success">
+    <ion-button expand="block" color="success" class="pagar-btn">
       <ion-icon name="card-outline" slot="start"></ion-icon>
       Pagar
     </ion-button>
   </div>
   <ng-template #vacio>
-    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 40vh;">
-      <ion-icon name="cart-outline" style="font-size: 5em; color: #007aff; margin-bottom: 16px;"></ion-icon>
-      <div style="font-size: 1.3em; color: #007aff; font-weight: 600; margin-bottom: 8px;">
-        ¡Tu carrito está vacío!
-      </div>
-      <div style="color: #888; font-size: 1em;">
-        Agrega productos para comenzar tu compra.
-      </div>
+    <div>
+      <ion-icon name="cart-outline"></ion-icon>
+      <div>¡Tu carrito está vacío!</div>
+      <div>Agrega productos para comenzar tu compra.</div>
     </div>
   </ng-template>
 </ion-content>
