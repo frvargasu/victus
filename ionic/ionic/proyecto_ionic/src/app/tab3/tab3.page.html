@@ -1,0 +1,79 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Menu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ng-container *ngIf="!isLoggedIn; else usuarioMenu">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Iniciar Sesion</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form (ngSubmit)="login()">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="loginData.email" name="loginEmail" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="loginData.password" name="loginPassword" required></ion-input>
+          </ion-item>
+          <ion-button expand="block" type="submit" color="primary">Iniciar Sesion</ion-button>
+        </form>
+        <ion-button expand="block" fill="clear" (click)="showRegister = !showRegister">
+          ¿No tienes cuenta? Registrate
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="showRegister">
+      <ion-card-header>
+        <ion-card-title>Crear Cuenta</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form (ngSubmit)="register()">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="registerData.email" name="registerEmail" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="registerData.password" name="registerPassword" required></ion-input>
+          </ion-item>
+          <ion-button expand="block" type="submit" color="success">Registrarse</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ng-template #usuarioMenu>
+    <ion-list>
+      <ion-item>
+        <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+        <ion-label>Mi Cuenta</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="cart-outline" slot="start"></ion-icon>
+        <ion-label>Mis Compras</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="key-outline" slot="start"></ion-icon>
+        <ion-label>Cambiar Contraseña</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="settings-outline" slot="start"></ion-icon>
+        <ion-label>Configuración</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+        <ion-label>Ayuda</ion-label>
+      </ion-item>
+      <ion-item (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        <ion-label>Cerrar Sesion</ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+</ion-content>

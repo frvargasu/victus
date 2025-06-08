@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Carrito</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="obtenerCarrito().length > 0; else vacio">
+    <ion-list>
+      <ion-item *ngFor="let producto of obtenerCarrito()">
+        <ion-thumbnail slot="start">
+          <img [src]="producto.imagen" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ producto.nombre }}</h2>
+          <p>${{ producto.precio }} x {{ producto.cantidad }}</p>
+        </ion-label>
+        <ion-button size="small" (click)="quitarProducto(producto.nombre)">-</ion-button>
+        <ion-button size="small" (click)="agregarProducto(producto)">+</ion-button>
+      </ion-item>
+    </ion-list>
+    <div class="carrito-total">
+     <p> Total: ${{ obtenerTotal() }}</p>
+    </div>
+    <ion-button expand="block" color="success" class="pagar-btn">
+      <ion-icon name="card-outline" slot="start"></ion-icon>
+      Pagar
+    </ion-button>
+  </div>
+  <ng-template #vacio>
+    <div>
+      <ion-icon name="cart-outline"></ion-icon>
+      <div>¡Tu carrito está vacío!</div>
+      <div>Agrega productos para comenzar tu compra.</div>
+    </div>
+  </ng-template>
+</ion-content>

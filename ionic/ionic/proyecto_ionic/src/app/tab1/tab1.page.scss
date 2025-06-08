@@ -1,0 +1,35 @@
+ion-card {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  border-radius: 18px;
+  transition: transform 0.2s;
+  margin-bottom: 18px;
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2a2a2a;
+  text-align: center;
+}
+
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img {
+  border-radius: 12px 12px 0 0;
+  background: #f8f8f8;
+  padding: 12px;
+}
+
+ion-button {
+  margin-top: 10px;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+}
