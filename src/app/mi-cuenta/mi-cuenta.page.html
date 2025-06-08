@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Mi Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item>
+    <ion-icon name="calendar-outline" slot="start"></ion-icon>
+    <ion-label>Fecha de Cumpleaños :</ion-label>
+    <mat-form-field appearance="fill">
+      <mat-label>Selecciona tu fecha de cumpleaños</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="fechaCumpleanos">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="person-outline" slot="start"></ion-icon>
+    <ion-label>Nombre:</ion-label>
+    <ion-input [(ngModel)]="nombre"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="people-outline" slot="start"></ion-icon>
+    <ion-label>Apellido:</ion-label>
+    <ion-input [(ngModel)]="apellido"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="school-outline" slot="start"></ion-icon>
+    <ion-label>Nivel educacional:</ion-label>
+    <ion-input [(ngModel)]="nivelEducacional"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="save-outline" slot="start"></ion-icon>
+    <ion-label>Guardar:</ion-label>
+    <ion-button expand="block" (click)="guardarDatos()">Guardar</ion-button>
+  </ion-item>
+  
+  <!-- Botón para mostrar datos guardados -->
+  <ion-item>
+    <ion-icon name="eye-outline" slot="start"></ion-icon>
+    <ion-label>Mostrar Datos:</ion-label>
+    <ion-button expand="block" (click)="mostrarDatos()">Mostrar</ion-button>
+  </ion-item>
+
+  <!-- Área para mostrar los datos guardados -->
+  <ion-card *ngIf="datosGuardados">
+    <ion-card-header>
+      <ion-card-title>Datos Guardados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Fecha de Cumpleaños:</strong> {{ datosGuardados.fechaCumpleanos }}</p>
+      <p><strong>Nombre:</strong> {{ datosGuardados.nombre }}</p>
+      <p><strong>Apellido:</strong> {{ datosGuardados.apellido }}</p>
+      <p><strong>Nivel Educacional:</strong> {{ datosGuardados.nivelEducacional }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" routerLink="/tabs/tab3">Volver</ion-button>
+</ion-content>
