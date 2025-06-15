@@ -1,6 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Mi Cuenta</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -36,14 +40,14 @@
     <ion-button expand="block" (click)="guardarDatos()">Guardar</ion-button>
   </ion-item>
   
-  <!-- Botón para mostrar datos guardados -->
+  <!-- botonn para mostrar datos guardados -->
   <ion-item>
     <ion-icon name="eye-outline" slot="start"></ion-icon>
     <ion-label>Mostrar Datos:</ion-label>
     <ion-button expand="block" (click)="mostrarDatos()">Mostrar</ion-button>
   </ion-item>
 
-  <!-- Área para mostrar los datos guardados -->
+  <!-- aca se muestran los datos guardados -->
   <ion-card *ngIf="datosGuardados">
     <ion-card-header>
       <ion-card-title>Datos Guardados</ion-card-title>
@@ -56,5 +60,5 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-button expand="block" routerLink="/tabs/tab3">Volver</ion-button>
+  
 </ion-content>

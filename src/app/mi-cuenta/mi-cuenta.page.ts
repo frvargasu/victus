@@ -32,7 +32,7 @@ export class MiCuentaPage {
   constructor() {}
 
   guardarDatos() {
-    // Asignar los valores ingresados a la variable datosGuardados
+    
     this.datosGuardados = {
       fechaCumpleanos: this.fechaCumpleanos,
       nombre: this.nombre,
@@ -44,7 +44,7 @@ export class MiCuentaPage {
   }
 
   mostrarDatos() {
-    // Verificar si hay datos guardados
+    
     if (this.datosGuardados) {
       console.log('Mostrando datos:', this.datosGuardados);
       alert(

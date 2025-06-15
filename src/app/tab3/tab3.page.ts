@@ -15,13 +15,11 @@ export class Tab3Page {
   constructor() {}
 
   login() {
-    // Simula inicio de sesión exitoso
     this.isLoggedIn = true;
     this.showRegister = false;
   }
 
   register() {
-    // Simula registro exitoso
     this.isLoggedIn = true;
     this.showRegister = false;
   }
