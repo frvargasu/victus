@@ -38,4 +38,5 @@ export class CarritoPage {
   quitarProducto(nombre: string) {
     this.carritoService.quitarDelCarrito(nombre);
   }
+
 }
