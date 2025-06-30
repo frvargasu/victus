@@ -7,19 +7,33 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 export class DBTaskService {
   private dbInstance: SQLiteObject | null = null;
 
+  private mockDatabase: { users: any[]; sessions: any[] } = {
+    users: [{ id: 1, username: 'test@example.com', password: '123456' }],
+    sessions: [],
+  };
+
   constructor(private sqlite: SQLite) {}
 
   async setDatabase(): Promise<void> {
-    try {
-      const db = await this.sqlite.create({
-        name: 'app.db',
-        location: 'default'
-      });
-      this.dbInstance = db;
-      console.log('Base de datos inicializada correctamente.');
-    } catch (error) {
-      console.error('Error al inicializar la base de datos:', error);
+    if (this.isBrowser()) {
+      console.log('Usando IndexedDB en el navegador.');
+      this.dbInstance = null; 
+    } else {
+      try {
+        const db = await this.sqlite.create({
+          name: 'app.db',
+          location: 'default',
+        });
+        this.dbInstance = db;
+        console.log('Base de datos inicializada correctamente.');
+      } catch (error) {
+        console.error('Error al inicializar la base de datos:', error);
+      }
     }
+  }
+
+  private isBrowser(): boolean {
+    return !document.URL.startsWith('file://');
   }
 
   async createTables(): Promise<void> {
@@ -53,38 +67,50 @@ export class DBTaskService {
   }
 
   async validateUser(username: string, password: string): Promise<boolean> {
-    if (!this.dbInstance) {
-      throw new Error('La instancia de la base de datos no está inicializada.');
-    }
+    if (this.isBrowser()) {
+      const user = this.mockDatabase.users.find(
+        (u) => u.username === username && u.password === password
+      );
+      return !!user;
+    } else {
+      if (!this.dbInstance) {
+        throw new Error('La instancia de la base de datos no está inicializada.');
+      }
 
-    const query = `SELECT * FROM users WHERE username = ? AND password = ? LIMIT 1`;
-    try {
-      const result = await this.dbInstance.executeSql(query, [username, password]);
-      console.log('Resultado de validación:', result.rows);
-      if (result.rows.length > 0) {
-        console.log('Usuario encontrado:', result.rows.item(0));
-        return true;
-      } else {
-        console.log('No se encontró un usuario con las credenciales proporcionadas.');
+      const query = `SELECT * FROM users WHERE username = ? AND password = ? LIMIT 1`;
+      try {
+        const result = await this.dbInstance.executeSql(query, [username, password]);
+        console.log('Resultado de validación:', result.rows);
+        if (result.rows.length > 0) {
+          console.log('Usuario encontrado:', result.rows.item(0));
+          return true;
+        } else {
+          console.log('No se encontró un usuario con las credenciales proporcionadas.');
+          return false;
+        }
+      } catch (error) {
+        console.error('Error al validar el usuario:', error);
         return false;
       }
-    } catch (error) {
-      console.error('Error al validar el usuario:', error);
-      return false;
     }
   }
 
   async registerSession(userId: number): Promise<void> {
-    if (!this.dbInstance) {
-      throw new Error('La instancia de la base de datos no está inicializada.');
-    }
+    if (this.isBrowser()) {
+      this.mockDatabase.sessions.push({ id: Date.now(), userId, active: 1 });
+      console.log('Sesión registrada correctamente en el navegador.');
+    } else {
+      if (!this.dbInstance) {
+        throw new Error('La instancia de la base de datos no está inicializada.');
+      }
 
-    const query = `INSERT INTO sessions (userId, active) VALUES (?, 1)`;
-    try {
-      await this.dbInstance.executeSql(query, [userId]);
-      console.log('Sesión registrada correctamente para el usuario con ID:', userId);
-    } catch (error) {
-      console.error('Error al registrar la sesión:', error);
+      const query = `INSERT INTO sessions (userId, active) VALUES (?, 1)`;
+      try {
+        await this.dbInstance.executeSql(query, [userId]);
+        console.log('Sesión registrada correctamente para el usuario con ID:', userId);
+      } catch (error) {
+        console.error('Error al registrar la sesión:', error);
+      }
     }
   }
 

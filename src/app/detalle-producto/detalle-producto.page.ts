@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProductosService, Producto } from '../services/productos.service';
+import { ProductosService } from '../services/productos.service';
+import { Producto } from '../models/producto';
 
 @Component({
   selector: 'app-detalle-producto',

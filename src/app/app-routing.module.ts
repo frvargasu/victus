@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { GeolocalizacionComponent } from './geolocalizacion/geolocalizacion.component';
 
 const routes: Routes = [
   {
@@ -22,7 +22,9 @@ const routes: Routes = [
   {
     path: 'mi-cuenta',
     loadChildren: () => import('./mi-cuenta/mi-cuenta.module').then( m => m.MiCuentaPageModule)
-  }
+  },
+  { path: 'geolocalizacion', component: GeolocalizacionComponent },
+  { path: '', redirectTo: 'tab3', pathMatch: 'full' },
 ];
 
 @NgModule({
