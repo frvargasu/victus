@@ -53,7 +53,7 @@
 
   <ng-template #usuarioMenu>
     <!-- Segmented control para las pestañas -->
-    <ion-segment [(ngModel)]="selectedTab" scrollable>
+    <ion-segment [(ngModel)]="selectedTab" scrollable (ionChange)="onTabChange()">
       <ion-segment-button value="perfil">
         <ion-icon name="person"></ion-icon>
         <ion-label>Perfil</ion-label>
@@ -134,7 +134,7 @@
           <div *ngIf="!ubicacionActual" style="text-align: center; padding: 20px;">
             <ion-icon name="location-outline" style="font-size: 3em; color: #ccc;"></ion-icon>
             <h3>Ubicación no disponible</h3>
-            <p>Permite el acceso a tu ubicación para encontrar tiendas cercanas</p>
+            <p>Permite el acceso a tu ubicación para ver el mapa y encontrar tiendas cercanas</p>
             <ion-button expand="block" 
                         color="primary" 
                         (click)="obtenerUbicacion()"
@@ -146,6 +146,12 @@
           </div>
 
           <div *ngIf="ubicacionActual">
+            <!-- Mapa -->
+            <div #mapContainer 
+                 style="height: 300px; width: 100%; border-radius: 8px; margin-bottom: 16px;">
+            </div>
+            
+            <!-- Información de ubicación -->
             <ion-item>
               <ion-icon name="location" slot="start" color="success"></ion-icon>
               <ion-label>

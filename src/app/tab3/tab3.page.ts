@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { DBTaskService } from '../services/DBTask.service';
 import { GeolocalizacionService, Ubicacion, TiendaCercana } from '../services/geolocalizacion.service';
 import { SqliteProductosService } from '../services/sqlite-productos.service';
 import { Producto } from '../models/producto';
+import L from 'leaflet';
 
 @Component({
   selector: 'app-tab3',
@@ -11,7 +12,14 @@ import { Producto } from '../models/producto';
   styleUrls: ['tab3.page.scss'],
   standalone: false,
 })
-export class Tab3Page implements OnInit {
+export class Tab3Page implements OnInit, AfterViewInit {
+  @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
+  
+  // Propiedades del mapa
+  private mapa: any = null;
+  private marcadorUsuario: any = null;
+  private marcadoresTiendas: any[] = [];
+  
   // Propiedades para autenticación
   showRegister = false;
   isLoggedIn = false;
@@ -45,6 +53,20 @@ export class Tab3Page implements OnInit {
     } catch (error) {
       console.error('Error durante la inicializacion:', error);
     }
+  }
+
+  ngAfterViewInit() {
+    // Configurar iconos por defecto de Leaflet
+    const iconDefault = L.icon({
+      iconUrl: 'assets/leaflet/marker-icon.png',
+      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      shadowUrl: 'assets/leaflet/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+    L.Marker.prototype.options.icon = iconDefault;
   }
 
   async ionViewWillEnter() {
@@ -132,6 +154,7 @@ export class Tab3Page implements OnInit {
 
       this.ubicacionActual = await this.geolocalizacionService.obtenerUbicacionActual();
       await this.buscarTiendasCercanas();
+      await this.inicializarMapa();
       await this.mostrarToast('Ubicación obtenida correctamente');
     } catch (error) {
       console.error('Error al obtener ubicación:', error);
@@ -179,6 +202,94 @@ export class Tab3Page implements OnInit {
     if (!tienda.telefono) return;
     
     window.open(`tel:${tienda.telefono}`, '_system');
+  }
+
+  // Métodos del mapa
+  private async inicializarMapa() {
+    if (!this.ubicacionActual || !this.mapContainer) return;
+
+    // Esperar un poco para asegurar que el DOM esté listo
+    setTimeout(() => {
+      if (this.mapa) {
+        this.mapa.remove();
+      }
+
+      // Crear el mapa
+      this.mapa = L.map(this.mapContainer.nativeElement).setView(
+        [this.ubicacionActual!.latitude, this.ubicacionActual!.longitude], 
+        13
+      );
+
+      // Agregar capa de mapa
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(this.mapa);
+
+      // Agregar marcador del usuario
+      this.agregarMarcadorUsuario();
+      
+      // Agregar marcadores de tiendas
+      this.agregarMarcadoresTiendas();
+    }, 100);
+  }
+
+  private agregarMarcadorUsuario() {
+    if (!this.mapa || !this.ubicacionActual) return;
+
+    // Icono personalizado para el usuario
+    const iconoUsuario = L.divIcon({
+      html: '<div style="background-color: #3880ff; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.5);"></div>',
+      iconSize: [20, 20],
+      className: 'custom-div-icon'
+    });
+
+    this.marcadorUsuario = L.marker(
+      [this.ubicacionActual.latitude, this.ubicacionActual.longitude],
+      { icon: iconoUsuario }
+    ).addTo(this.mapa);
+
+    this.marcadorUsuario.bindPopup('Tu ubicación actual').openPopup();
+  }
+
+  private agregarMarcadoresTiendas() {
+    if (!this.mapa) return;
+
+    // Limpiar marcadores existentes
+    this.marcadoresTiendas.forEach(marcador => {
+      this.mapa!.removeLayer(marcador);
+    });
+    this.marcadoresTiendas = [];
+
+    // Agregar marcadores de tiendas
+    this.tiendasCercanas.forEach(tienda => {
+      const iconoTienda = L.divIcon({
+        html: '<div style="background-color: #10dc60; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 8px rgba(0,0,0,0.4);"></div>',
+        iconSize: [16, 16],
+        className: 'custom-div-icon'
+      });
+
+      const marcador = L.marker(
+        [tienda.latitude, tienda.longitude],
+        { icon: iconoTienda }
+      ).addTo(this.mapa!);
+
+      marcador.bindPopup(`
+        <strong>${tienda.nombre}</strong><br>
+        ${tienda.direccion}<br>
+        <small>${tienda.distancia?.toFixed(1)} km de distancia</small>
+      `);
+
+      this.marcadoresTiendas.push(marcador);
+    });
+  }
+
+  // Método para cuando se cambia de pestaña
+  onTabChange() {
+    if (this.selectedTab === 'ubicacion' && this.ubicacionActual && !this.mapa) {
+      setTimeout(() => {
+        this.inicializarMapa();
+      }, 200);
+    }
   }
 
   // Métodos auxiliares

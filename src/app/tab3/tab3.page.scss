@@ -115,3 +115,49 @@ ion-input {
 social-buttons ion-icon:hover {
   transform: scale(1.2);
 }
+
+// Estilos para el mapa de Leaflet
+.leaflet-container {
+  border-radius: 8px;
+  border: 2px solid var(--ion-color-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.custom-div-icon {
+  background: transparent;
+  border: none;
+}
+
+// Ajustes para los controles de Leaflet en dispositivos móviles
+.leaflet-control-zoom {
+  border-radius: 6px;
+  border: 1px solid var(--ion-color-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--ion-color-light);
+  color: var(--ion-color-dark);
+  border-radius: 4px;
+  
+  &:hover {
+    background-color: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+  }
+}
+
+// Mejoras para popups del mapa
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-popup-tip {
+  background: white;
+}
+
+// Asegurar que el mapa se adapte al contenedor
+#mapContainer {
+  position: relative;
+  z-index: 1;
+}
