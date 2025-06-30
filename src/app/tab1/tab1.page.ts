@@ -125,10 +125,11 @@ export class Tab1Page implements OnInit {
       const index = this.productos.findIndex(p => p.id === producto.id || p.nombre === producto.nombre);
       if (index !== -1) {
         this.productos[index].isFavorite = !this.productos[index].isFavorite;
+        
+        // Mensaje basado en el nuevo estado
+        const mensaje = this.productos[index].isFavorite ? 'Agregado a favoritos' : 'Eliminado de favoritos';
+        await this.mostrarToast(mensaje);
       }
-      
-      const mensaje = producto.isFavorite ? 'Eliminado de favoritos' : 'Agregado a favoritos';
-      await this.mostrarToast(mensaje);
     }
   }
 
