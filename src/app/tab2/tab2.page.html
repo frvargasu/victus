@@ -32,7 +32,7 @@
             <h2>{{ producto.nombre }}</h2>
             <p *ngIf="producto.categoria">{{ producto.categoria }}</p>
             <p>
-              <strong>${{ producto.precio | number:'1.0-0' }}</strong>
+              <strong>{{ producto.precio | currencyClp }}</strong>
               <ion-badge *ngIf="producto.rating" color="warning" style="margin-left: 8px;">
                 <ion-icon name="star"></ion-icon>
                 {{ producto.rating }}

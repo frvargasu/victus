@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { ProductosService } from '../services/productos.service';
 import { Producto } from '../models/producto';
 
@@ -10,8 +7,7 @@ import { Producto } from '../models/producto';
   selector: 'app-detalle-producto',
   templateUrl: './detalle-producto.page.html',
   styleUrls: ['./detalle-producto.page.scss'],
-  standalone: true, 
-  imports: [IonicModule, CommonModule, FormsModule], 
+  standalone: false
 })
 export class DetalleProductoPage implements OnInit {
   producto: Producto | undefined;

@@ -12,7 +12,7 @@
     <div style="width: 90%; max-width: 400px; background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
       <ion-img [src]="producto?.imagen" style="width: 100%; height: auto; border-radius: 8px;"></ion-img>
       <h2 style="text-align: center; margin: 16px 0;">{{ producto?.nombre }}</h2>
-      <p style="text-align: center; font-size: 1.2em; color: #007aff;">Precio: ${{ producto?.precio }}</p>
+      <p style="text-align: center; font-size: 1.2em; color: #007aff;">Precio: {{ producto?.precio | currencyClp }}</p>
       <p style="text-align: center; font-size: 1em; color: #333; margin: 12px 0;">{{ producto?.descripcion }}</p>
       
     </div>

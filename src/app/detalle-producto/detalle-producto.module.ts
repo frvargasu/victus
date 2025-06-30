@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { SharedModule } from '../shared/shared.module';
+
+import { DetalleProductoPageRoutingModule } from './detalle-producto-routing.module';
 import { DetalleProductoPage } from './detalle-producto.page';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: DetalleProductoPage, 
-  },
-];
-
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    DetalleProductoPageRoutingModule,
+    SharedModule
+  ],
+  declarations: [DetalleProductoPage]
 })
 export class DetalleProductoPageModule {}

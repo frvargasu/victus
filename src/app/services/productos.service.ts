@@ -124,10 +124,13 @@ export class ProductosService {
   }
 
   private convertirAPIAProducto(apiProducto: ProductoAPI): Producto {
+    // Convertir precio de USD a CLP (aproximadamente 1 USD = 900 CLP)
+    const precioEnPesos = Math.round(apiProducto.price * 900);
+    
     return {
       id: apiProducto.id,
       nombre: apiProducto.title,
-      precio: apiProducto.price,
+      precio: precioEnPesos,
       imagen: apiProducto.image,
       descripcion: apiProducto.description,
       categoria: apiProducto.category,
