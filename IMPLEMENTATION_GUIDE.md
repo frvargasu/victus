@@ -146,14 +146,7 @@ ionic serve
 | **Geolocalización + Maps** | 75 min | ✅ |
 | **Total** | **5 horas** | ✅ |
 
-## 🎯 Próximos Pasos (Opcionales)
 
-- [ ] **Push notifications** para ofertas
-- [ ] **Autenticación completa** con registro real
-- [ ] **Pagos integrados** con Stripe/PayPal
-- [ ] **Sincronización cloud** de favoritos
-- [ ] **Reviews y ratings** de productos
-- [ ] **Chat de soporte** en tiempo real
 
 ## 🛠️ Comandos Útiles
 
