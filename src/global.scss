@@ -1,0 +1,165 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import "@ionic/angular/css/palettes/dark.system.css";
+@import 'animate.css';
+@import "~leaflet/dist/leaflet.css";
+
+div.animate__animated {
+  background: #007aff;
+  padding: 14px 0;
+  text-align: center;
+  margin: 14px 0 0 0;
+}
+
+span {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/**
+ * Estilos globales para modo oscuro
+ * -----------------------------------------------------
+ */
+
+// Estilos adicionales para mejorar contraste
+ion-header {
+  --background: var(--ion-toolbar-background);
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-step-100);
+}
+
+ion-toolbar {
+  --background: var(--ion-toolbar-background);
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-step-100);
+}
+
+ion-title {
+  color: var(--ion-text-color);
+  font-weight: 600;
+}
+
+ion-content {
+  --background: var(--ion-background-color);
+  --color: var(--ion-text-color);
+}
+
+// Estilos para botones
+ion-button {
+  --border-radius: 8px;
+  
+  &.button-outline {
+    --color: var(--ion-color-primary);
+    --border-color: var(--ion-color-primary);
+  }
+  
+  &.button-clear {
+    --color: var(--ion-color-primary);
+  }
+}
+
+// Estilos para modales y alertas
+ion-modal {
+  --background: var(--ion-background-color);
+  --color: var(--ion-text-color);
+}
+
+ion-alert {
+  --background: var(--ion-background-color);
+  --color: var(--ion-text-color);
+}
+
+// Estilos para searchbar
+ion-searchbar {
+  --background: var(--ion-color-step-100);
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+  --icon-color: var(--ion-color-medium);
+  --clear-button-color: var(--ion-color-medium);
+}
+
+// Estilos para select
+ion-select {
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+}
+
+// Clases utilitarias para mejorar accesibilidad
+.text-contrast {
+  color: var(--ion-text-color) !important;
+}
+
+.text-secondary {
+  color: var(--ion-color-medium) !important;
+}
+
+.bg-surface {
+  background: var(--ion-color-step-100) !important;
+}
+
+.border-subtle {
+  border-color: var(--ion-color-step-100) !important;
+}
+
+// Mejoras para animaciones y transiciones
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Estilos específicos para modo oscuro
+@media (prefers-color-scheme: dark) {
+  // Mejorar contraste de sombras
+  ion-card {
+    box-shadow: 0 4px 16px rgba(255,255,255,0.05);
+  }
+  
+  // Mejorar bordes
+  ion-item {
+    border-color: var(--ion-color-step-150);
+  }
+  
+  // Mejorar contraste de texto secundario
+  .text-secondary {
+    color: var(--ion-color-step-600) !important;
+  }
+}

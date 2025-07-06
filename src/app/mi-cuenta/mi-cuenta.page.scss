@@ -1,0 +1,57 @@
+
+// Estilos para el calendario - compatible con modo oscuro
+.mat-calendar {
+  background-color: var(--ion-card-background);
+  color: var(--ion-text-color);
+  border-radius: 8px;
+}
+
+.mat-calendar-body-selected {
+  background-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.mat-calendar-body-cell:hover {
+  background-color: var(--ion-color-step-100);
+}
+
+.mat-calendar-period-button {
+  color: var(--ion-color-primary);
+}
+
+.mat-calendar-period-button:hover {
+  background-color: var(--ion-color-step-100);
+}
+
+// Estilos adicionales para la página de mi cuenta
+ion-card {
+  --background: var(--ion-card-background);
+  --color: var(--ion-text-color);
+  border-radius: 16px;
+  margin: 16px;
+}
+
+ion-item {
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-step-100);
+}
+
+ion-label {
+  color: var(--ion-text-color);
+}
+
+ion-button {
+  --border-radius: 8px;
+}
+
+// Estilos para formularios
+ion-input {
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+}
+
+ion-textarea {
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+}

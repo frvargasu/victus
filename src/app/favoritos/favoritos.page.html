@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Favoritos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button 
+        *ngIf="favoritos.length > 0" 
+        (click)="limpiarFavoritos()" 
+        fill="clear" 
+        color="danger">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="favoritos.length > 0; else sinFavoritos">
+    <ion-list>
+      <ion-item *ngFor="let producto of favoritos">
+        <ion-thumbnail slot="start">
+          <img [src]="producto.imagen" [alt]="producto.nombre" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ producto.nombre }}</h2>
+          <p>{{ producto.precio | currencyClp }}</p>
+          <p *ngIf="producto.descripcion">{{ producto.descripcion }}</p>
+        </ion-label>
+        <ion-button 
+          slot="end" 
+          fill="clear" 
+          color="danger" 
+          (click)="quitarFavorito(producto.nombre)">
+          <ion-icon name="heart-dislike" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+  
+  <ng-template #sinFavoritos>
+    <div class="empty-state">
+      <ion-icon name="heart-outline" size="large"></ion-icon>
+      <h2>No tienes favoritos</h2>
+      <p>Los productos que marques como favoritos aparecerán aquí</p>
+    </div>
+  </ng-template>
+</ion-content>

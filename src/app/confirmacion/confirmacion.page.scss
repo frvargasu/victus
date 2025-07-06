@@ -1,0 +1,68 @@
+// Estilos para página de confirmación - compatible con modo oscuro
+ion-card {
+  --background: var(--ion-card-background);
+  --color: var(--ion-text-color);
+  border-radius: 16px;
+  margin: 16px;
+  text-align: center;
+  padding: 20px;
+}
+
+.confirmacion-icon {
+  font-size: 4rem;
+  color: var(--ion-color-success);
+  margin-bottom: 20px;
+}
+
+.confirmacion-titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--ion-text-color);
+  margin-bottom: 10px;
+}
+
+.confirmacion-mensaje {
+  color: var(--ion-color-medium);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.confirmacion-detalles {
+  background: var(--ion-color-step-50);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid var(--ion-color-step-100);
+}
+
+.detalle-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--ion-color-step-100);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.detalle-label {
+  color: var(--ion-color-medium);
+  font-weight: 500;
+}
+
+.detalle-valor {
+  color: var(--ion-text-color);
+  font-weight: 600;
+}
+
+ion-button {
+  --border-radius: 8px;
+  margin-top: 20px;
+  
+  &.button-outline {
+    --color: var(--ion-color-primary);
+    --border-color: var(--ion-color-primary);
+  }
+}

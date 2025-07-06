@@ -1,0 +1,252 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Perfil y Ubicación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ng-container *ngIf="!isLoggedIn; else usuarioMenu">
+    <div class="login-container">
+      <div class="header">
+        <h1>Developer Clothing</h1>
+        <p>Tu tienda de tecnología favorita</p>
+      </div>
+      <ion-card>
+        <ion-card-content>
+          <form (ngSubmit)="login()">
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="email" [(ngModel)]="loginData.email" name="loginEmail" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input type="password" [(ngModel)]="loginData.password" name="loginPassword" required></ion-input>
+            </ion-item>
+            <ion-button expand="block" type="submit" color="primary">Iniciar Sesión</ion-button>
+          </form>
+          <ion-button expand="block" fill="clear" (click)="showRegister = !showRegister">
+            ¿No tienes cuenta? Regístrate
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="showRegister">
+        <ion-card-header>
+          <ion-card-title>Crear Cuenta</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <form (ngSubmit)="register()">
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="email" [(ngModel)]="registerData.email" name="registerEmail" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input type="password" [(ngModel)]="registerData.password" name="registerPassword" required></ion-input>
+            </ion-item>
+            <ion-button expand="block" type="submit" color="success">Registrarse</ion-button>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ng-container>
+
+  <ng-template #usuarioMenu>
+    <!-- Segmented control para las pestañas -->
+    <ion-segment [(ngModel)]="selectedTab" scrollable>
+      <ion-segment-button value="perfil">
+        <ion-icon name="person"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="ubicacion">
+        <ion-icon name="location"></ion-icon>
+        <ion-label>Ubicación</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="tiendas">
+        <ion-icon name="storefront"></ion-icon>
+        <ion-label>Tiendas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Contenido del perfil -->
+    <div *ngIf="selectedTab === 'perfil'">
+      <!-- Estadísticas del usuario -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="person-circle" color="primary"></ion-icon>
+            Mi Perfil
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-icon name="heart" slot="start" color="danger"></ion-icon>
+              <ion-label>
+                <h3>Favoritos</h3>
+                <p>{{ favoritosCount }} productos guardados</p>
+              </ion-label>
+              <ion-badge color="danger">{{ favoritosCount }}</ion-badge>
+            </ion-item>
+            <ion-item [routerLink]="['/tabs/tab2']">
+              <ion-icon name="heart-outline" slot="start" color="danger"></ion-icon>
+              <ion-label>Ver mis favoritos</ion-label>
+              <ion-icon name="chevron-forward" slot="end"></ion-icon>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Opciones del menú -->
+      <ion-list>
+        <ion-item routerLink="/mi-cuenta">
+          <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+          <ion-label>Mi Cuenta</ion-label>
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="cart-outline" slot="start"></ion-icon>
+          <ion-label>Mis Compras</ion-label>
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          <ion-label>Configuración</ion-label>
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
+          <ion-label color="danger">Cerrar Sesión</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- Contenido de ubicación -->
+    <div *ngIf="selectedTab === 'ubicacion'">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="location" color="primary"></ion-icon>
+            Mi Ubicación
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngIf="!ubicacionActual" style="text-align: center; padding: 20px;">
+            <ion-icon name="location-outline" style="font-size: 3em; color: #ccc;"></ion-icon>
+            <h3>Ubicación no disponible</h3>
+            <p>Permite el acceso a tu ubicación para encontrar tiendas cercanas</p>
+            <ion-button expand="block" 
+                        color="primary" 
+                        (click)="obtenerUbicacion()"
+                        [disabled]="isLoadingLocation">
+              <ion-icon name="locate" slot="start"></ion-icon>
+              <span *ngIf="!isLoadingLocation">Obtener mi ubicación</span>
+              <span *ngIf="isLoadingLocation">Obteniendo ubicación...</span>
+            </ion-button>
+          </div>
+
+          <div *ngIf="ubicacionActual">
+            <ion-item>
+              <ion-icon name="location" slot="start" color="success"></ion-icon>
+              <ion-label>
+                <h3>Ubicación actual</h3>
+                <p>Lat: {{ ubicacionActual.latitude | number:'1.4-4' }}</p>
+                <p>Lng: {{ ubicacionActual.longitude | number:'1.4-4' }}</p>
+                <p *ngIf="ubicacionActual.accuracy">
+                  Precisión: {{ ubicacionActual.accuracy | number:'1.0-0' }}m
+                </p>
+              </ion-label>
+            </ion-item>
+            
+            <ion-button expand="block" 
+                        fill="outline" 
+                        color="primary"
+                        (click)="obtenerUbicacion()"
+                        [disabled]="isLoadingLocation">
+              <ion-icon name="refresh" slot="start"></ion-icon>
+              Actualizar ubicación
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Contenido de tiendas cercanas -->
+    <div *ngIf="selectedTab === 'tiendas'">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="storefront" color="primary"></ion-icon>
+            Tiendas Cercanas
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngIf="!ubicacionActual" style="text-align: center; padding: 20px;">
+            <ion-icon name="location-outline" style="font-size: 3em; color: #ccc;"></ion-icon>
+            <h3>Necesitas activar tu ubicación</h3>
+            <p>Para encontrar tiendas cercanas, primero activa tu ubicación</p>
+            <ion-button expand="block" 
+                        color="primary" 
+                        (click)="selectedTab = 'ubicacion'">
+              <ion-icon name="location" slot="start"></ion-icon>
+              Ir a Ubicación
+            </ion-button>
+          </div>
+
+          <div *ngIf="ubicacionActual && tiendasCercanas.length === 0 && !isLoadingStores">
+            <div style="text-align: center; padding: 20px;">
+              <ion-icon name="storefront-outline" style="font-size: 3em; color: #ccc;"></ion-icon>
+              <h3>No hay tiendas cercanas</h3>
+              <p>No encontramos tiendas en un radio de 15km</p>
+              <ion-button expand="block" 
+                          color="primary" 
+                          (click)="buscarTiendasCercanas()"
+                          [disabled]="isLoadingStores">
+                <ion-icon name="search" slot="start"></ion-icon>
+                Buscar tiendas
+              </ion-button>
+            </div>
+          </div>
+
+          <div *ngIf="isLoadingStores" style="text-align: center; padding: 20px;">
+            <ion-spinner></ion-spinner>
+            <p>Buscando tiendas cercanas...</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Lista de tiendas cercanas -->
+      <ion-list *ngIf="tiendasCercanas.length > 0">
+        <ion-item-sliding *ngFor="let tienda of tiendasCercanas">
+          <ion-item>
+            <ion-icon name="storefront" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <h2>{{ tienda.nombre }}</h2>
+              <p>{{ tienda.direccion }}</p>
+              <p *ngIf="tienda.distancia">
+                <ion-icon name="location" color="medium"></ion-icon>
+                {{ tienda.distancia | number:'1.1-1' }} km de distancia
+              </p>
+              <p *ngIf="tienda.horario">
+                <ion-icon name="time" color="medium"></ion-icon>
+                {{ tienda.horario }}
+              </p>
+            </ion-label>
+            <ion-badge color="primary">{{ tienda.distancia | number:'1.1-1' }} km</ion-badge>
+          </ion-item>
+          
+          <ion-item-options>
+            <ion-item-option color="success" (click)="abrirEnGoogleMaps(tienda)">
+              <ion-icon name="map"></ion-icon>
+              Cómo llegar
+            </ion-item-option>
+            <ion-item-option *ngIf="tienda.telefono" color="primary" (click)="llamarTienda(tienda)">
+              <ion-icon name="call"></ion-icon>
+              Llamar
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+  </ng-template>
+</ion-content>

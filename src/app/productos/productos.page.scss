@@ -1,0 +1,324 @@
+.filtros-container {
+  padding: 16px;
+  background: var(--ion-color-step-50, #f8f9fa);
+  border-bottom: 1px solid var(--ion-border-color, #e0e0e0);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 16px;
+  color: var(--ion-color-medium);
+}
+
+.productos-container {
+  padding: 16px;
+  background: var(--ion-background-color);
+}
+
+.producto-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--ion-card-background);
+  border: 1px solid var(--ion-color-step-150, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .producto-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.producto-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .producto-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.imagen-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--ion-color-step-100, #f8f9fa);
+  border-bottom: 1px solid var(--ion-color-step-200, #e9ecef);
+}
+
+.imagen-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.producto-card:hover .imagen-container img {
+  transform: scale(1.05);
+}
+
+.favorito-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--ion-background-color, rgba(255, 255, 255, 0.95));
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  --padding-start: 0;
+  --padding-end: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--ion-color-step-200, #e9ecef);
+}
+
+@media (prefers-color-scheme: dark) {
+  .favorito-btn {
+    background: var(--ion-color-step-150);
+    border: 1px solid var(--ion-color-step-300);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.producto-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--ion-text-color);
+}
+
+.producto-descripcion {
+  color: var(--ion-color-medium);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.precio-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.precio {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ion-color-warning);
+  font-size: 0.9rem;
+}
+
+.botones-accion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.botones-accion ion-button {
+  --border-radius: 8px;
+  font-weight: 500;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  padding: 20px;
+  color: var(--ion-color-medium);
+  background: var(--ion-background-color);
+}
+
+.empty-state ion-icon {
+  margin-bottom: 20px;
+  opacity: 0.6;
+  color: var(--ion-color-medium);
+}
+
+.empty-state h2 {
+  margin-bottom: 10px;
+  color: var(--ion-text-color);
+}
+
+.empty-state p {
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  color: var(--ion-color-medium);
+}
+
+.resultados-info {
+  text-align: center;
+  padding: 16px;
+  border-top: 1px solid var(--ion-color-step-200, #e9ecef);
+  background: var(--ion-background-color);
+}
+
+.resultados-info ion-text {
+  color: var(--ion-color-medium);
+}
+
+/* Chip personalizado para categorías */
+ion-chip {
+  --background: var(--ion-color-primary-tint);
+  --color: var(--ion-color-primary-contrast);
+  border: 1px solid var(--ion-color-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-chip {
+    --background: var(--ion-color-primary-shade);
+    --color: var(--ion-color-primary-contrast);
+  }
+}
+
+/* Searchbar personalizado */
+ion-searchbar {
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+  --icon-color: var(--ion-color-medium);
+  --clear-button-color: var(--ion-color-medium);
+  --border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+/* Select personalizado */
+ion-select {
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-color-medium);
+}
+
+/* Item personalizado para filtros */
+.filtros-container ion-item {
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-step-200);
+  --inner-border-width: 0;
+  --border-radius: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .productos-container {
+    padding: 8px;
+  }
+  
+  .producto-card {
+    margin-bottom: 12px;
+  }
+  
+  .imagen-container {
+    height: 180px;
+  }
+  
+  .producto-titulo {
+    font-size: 1rem;
+  }
+  
+  .precio {
+    font-size: 1.1rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.producto-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Estados de carga con modo oscuro */
+.loading-skeleton {
+  background: linear-gradient(90deg, 
+    var(--ion-color-step-100, #f0f0f0) 25%, 
+    var(--ion-color-step-200, #e0e0e0) 50%, 
+    var(--ion-color-step-100, #f0f0f0) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Mejoras para accesibilidad en modo oscuro */
+.producto-card:focus-within {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+ion-button:focus {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+/* Spinner personalizado */
+ion-spinner {
+  --color: var(--ion-color-primary);
+}
+
+/* Toolbar y header mejorados */
+ion-header ion-toolbar {
+  --background: var(--ion-toolbar-background);
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-step-200);
+}
+
+/* Card content mejorado */
+ion-card-content {
+  background: var(--ion-card-background);
+  color: var(--ion-text-color);
+}
+
+ion-card-header {
+  background: var(--ion-card-background);
+  color: var(--ion-text-color);
+}
+
+ion-card-title {
+  color: var(--ion-text-color);
+}
+
+ion-card-subtitle {
+  color: var(--ion-color-medium);
+}

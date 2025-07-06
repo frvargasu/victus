@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-icon name="heart" color="danger"></ion-icon>
+      Mis Favoritos
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="favoritos.length > 0">
+      <ion-button (click)="limpiarTodosFavoritos()">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Loading -->
+  <div *ngIf="isLoading" style="text-align: center; padding: 20px;">
+    <ion-spinner></ion-spinner>
+    <p>Cargando favoritos...</p>
+  </div>
+
+  <!-- Lista de favoritos -->
+  <div *ngIf="!isLoading && favoritos.length > 0">
+    <ion-list>
+      <ion-item-sliding *ngFor="let producto of favoritos; trackBy: trackByFn">
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img [src]="producto.imagen" [alt]="producto.nombre" />
+          </ion-thumbnail>
+          
+          <ion-label>
+            <h2>{{ producto.nombre }}</h2>
+            <p *ngIf="producto.categoria">{{ producto.categoria }}</p>
+            <p>
+              <strong>{{ producto.precio | currencyClp }}</strong>
+              <ion-badge *ngIf="producto.rating" color="warning" style="margin-left: 8px;">
+                <ion-icon name="star"></ion-icon>
+                {{ producto.rating }}
+              </ion-badge>
+            </p>
+          </ion-label>
+          
+          <ion-button fill="clear" 
+                      slot="end" 
+                      color="primary"
+                      (click)="agregarAlCarrito(producto)">
+            <ion-icon name="cart-outline"></ion-icon>
+          </ion-button>
+          
+          <ion-button fill="clear" 
+                      slot="end" 
+                      color="medium"
+                      (click)="verDetalle(producto)">
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="eliminarFavorito(producto)">
+            <ion-icon name="trash"></ion-icon>
+            Eliminar
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+
+  <!-- Mensaje cuando no hay favoritos -->
+  <div *ngIf="!isLoading && favoritos.length === 0" style="text-align: center; padding: 40px;">
+    <ion-icon name="heart-outline" style="font-size: 4em; color: #ccc;"></ion-icon>
+    <h3>No tienes favoritos aún</h3>
+    <p>Agrega productos a tus favoritos desde la tienda</p>
+    <ion-button [routerLink]="['/tabs/tab1']" color="primary">
+      <ion-icon name="storefront-outline" slot="start"></ion-icon>
+      Ir a la Tienda
+    </ion-button>
+  </div>
+</ion-content>

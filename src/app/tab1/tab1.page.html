@@ -1,0 +1,151 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="header-toolbar">
+    <div class="header-content">
+      <ion-button 
+        fill="clear" 
+        color="primary" 
+        routerLink="/productos"
+        class="api-store-btn">
+        <ion-icon name="storefront-outline" slot="start"></ion-icon>
+        API Store
+      </ion-button>
+      <img src="assets/img/logo.png" alt="Logo" class="logo-img" />
+      <div class="cart-container">
+        <div class="cart-icon-container">
+          <ion-icon
+            name="cart-outline"
+            class="cart-icon"
+            [routerLink]="['/carrito']">
+          </ion-icon>
+          <ion-badge *ngIf="obtenerCantidadCarrito() > 0"
+            color="danger"
+            class="cart-badge">
+            {{ obtenerCantidadCarrito() }}
+          </ion-badge>
+        </div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <!-- Controles de vista y filtros -->
+  <div class="filtros-segment-container" style="padding: 16px;">
+    <ion-segment [(ngModel)]="mostrarAPI" (ionChange)="toggleVista()">
+      <ion-segment-button value="api">
+        <ion-label>API Productos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="local">
+        <ion-label>Productos Locales</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    
+    <div *ngIf="mostrarAPI === 'api'" style="margin-top: 12px;">
+      <ion-select [(ngModel)]="categoriaSeleccionada" 
+                  (ionChange)="cargarPorCategoria()" 
+                  placeholder="Filtrar por categoría">
+        <ion-select-option value="">Todas las categorías</ion-select-option>
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
+          {{ categoria }}
+        </ion-select-option>
+      </ion-select>
+      
+      <ion-button *ngIf="categoriaSeleccionada" 
+                  fill="clear" 
+                  size="small" 
+                  (click)="limpiarFiltros()">
+        <ion-icon name="close-circle"></ion-icon>
+        Limpiar filtros
+      </ion-button>
+    </div>
+  </div>
+  
+  <!-- Banner promocion -->
+  <div class="animate__animated animate__pulse animate__infinite banner-promocional">
+    <span>
+      ¡Envío gratis por compras sobre $29.990 CLP!
+    </span>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" style="text-align: center; padding: 20px;">
+    <ion-spinner></ion-spinner>
+    <p>Cargando productos...</p>
+  </div>
+
+  <!-- Grid de productos -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let producto of productos">
+        <ion-card>
+          <div style="position: relative;">
+            <img [src]="producto.imagen" 
+                 [alt]="producto.nombre" 
+                 style="width: 100%; height: 200px; object-fit: contain;" />
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              style="position: absolute; top: 8px; right: 8px; --color: #ff4757;"
+              (click)="toggleFavorito(producto)">
+              <ion-icon 
+                [name]="producto.isFavorite ? 'heart' : 'heart-outline'"
+                [color]="producto.isFavorite ? 'danger' : 'medium'">
+              </ion-icon>
+            </ion-button>
+          </div>
+          
+          <ion-card-header>
+            <ion-card-title>{{ producto.nombre }}</ion-card-title>
+            <ion-card-subtitle *ngIf="producto.categoria">
+              {{ producto.categoria }}
+            </ion-card-subtitle>
+          </ion-card-header>
+          
+          <ion-card-content>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <p style="font-size: 1.2em; font-weight: bold; color: #007aff; margin: 0;">
+                {{ producto.precio | currencyClp }}
+              </p>
+              <div *ngIf="producto.rating" style="display: flex; align-items: center;">
+                <ion-icon name="star" color="warning"></ion-icon>
+                <span style="margin-left: 4px; font-size: 0.9em;">{{ producto.rating }}</span>
+              </div>
+            </div>
+            
+            <p *ngIf="producto.descripcion" 
+               style="font-size: 0.9em; color: #666; margin-bottom: 12px;">
+              {{ producto.descripcion.length > 100 ? (producto.descripcion | slice:0:100) + '...' : producto.descripcion }}
+            </p>
+            
+            <ion-button expand="block" 
+                        color="primary" 
+                        (click)="agregarAlCarrito(producto)">
+              <ion-icon name="cart-outline" slot="start"></ion-icon>
+              Añadir al Carrito
+            </ion-button>
+            
+            <ion-button expand="block" 
+                        fill="outline" 
+                        color="secondary" 
+                        (click)="verDetalle(producto)">
+              <ion-icon name="eye-outline" slot="start"></ion-icon>
+              Ver Detalle
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    
+    <!-- Mensaje cuando no hay productos -->
+    <ion-row *ngIf="productos.length === 0 && !isLoading">
+      <ion-col size="12">
+        <div style="text-align: center; padding: 40px;">
+          <ion-icon name="bag-outline" style="font-size: 4em; color: #ccc;"></ion-icon>
+          <h3>No hay productos disponibles</h3>
+          <p>Intenta cambiar los filtros o verificar la conexión a internet.</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,158 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Productos API</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="limpiarFiltros()" fill="clear">
+        <ion-icon name="refresh" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="refrescarDatos($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Filtros -->
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Productos API</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="filtros-container">
+    <!-- Barra de búsqueda -->
+    <ion-searchbar 
+      [(ngModel)]="terminoBusqueda"
+      (ionInput)="buscarProductos($event)"
+      placeholder="Buscar productos..."
+      debounce="500"
+      show-clear-button="focus">
+    </ion-searchbar>
+
+    <!-- Filtro por categoría -->
+    <ion-item>
+      <ion-label>Categoría</ion-label>
+      <ion-select 
+        [(ngModel)]="categoriaSeleccionada" 
+        (ionChange)="filtrarPorCategoria($event)"
+        placeholder="Todas las categorías">
+        <ion-select-option value="">Todas las categorías</ion-select-option>
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
+          {{ categoria | titlecase }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="cargando" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando productos...</p>
+  </div>
+
+  <!-- Lista de productos -->
+  <div *ngIf="!cargando && productosFiltrados.length > 0" class="productos-container">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let producto of productosFiltrados; trackBy: trackByProducto">
+          <ion-card class="producto-card">
+            <!-- Imagen del producto -->
+            <div class="imagen-container">
+              <img [src]="producto.imagen" [alt]="producto.nombre" (error)="onImageError($event)">
+              <ion-button 
+                class="favorito-btn" 
+                fill="clear" 
+                (click)="toggleFavorito(producto)">
+                <ion-icon 
+                  [name]="(esFavorito(producto) | async) ? 'heart' : 'heart-outline'" 
+                  [color]="(esFavorito(producto) | async) ? 'danger' : 'medium'">
+                </ion-icon>
+              </ion-button>
+            </div>
+
+            <!-- Contenido del producto -->
+            <ion-card-header>
+              <ion-card-subtitle>
+                <ion-chip color="primary" outline>
+                  <ion-label>{{ producto.categoria | titlecase }}</ion-label>
+                </ion-chip>
+              </ion-card-subtitle>
+              <ion-card-title class="producto-titulo">
+                {{ producto.nombre }}
+              </ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+              <p class="producto-descripcion">
+                {{ producto.descripcion?.substring(0, 100) }}{{ producto.descripcion && producto.descripcion.length > 100 ? '...' : '' }}
+              </p>
+              
+              <div class="precio-rating">
+                <div class="precio">
+                  <strong>{{ producto.precio | currencyClp }}</strong>
+                </div>
+                <div class="rating" *ngIf="producto.rating">
+                  <ion-icon name="star" color="warning"></ion-icon>
+                  <span>{{ producto.rating | number:'1.1-1' }}</span>
+                </div>
+              </div>
+
+              <!-- Botones de acción -->
+              <div class="botones-accion">
+                <ion-button 
+                  expand="block" 
+                  fill="solid" 
+                  color="primary"
+                  (click)="agregarAlCarrito(producto)">
+                  <ion-icon name="cart" slot="start"></ion-icon>
+                  Agregar al Carrito
+                </ion-button>
+                
+                <ion-button 
+                  expand="block" 
+                  fill="outline" 
+                  color="secondary"
+                  (click)="verDetalle(producto)">
+                  <ion-icon name="eye" slot="start"></ion-icon>
+                  Ver Detalle
+                </ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Estado vacío -->
+  <div *ngIf="!cargando && productosFiltrados.length === 0" class="empty-state">
+    <ion-icon name="cube-outline" size="large"></ion-icon>
+    <h2>No se encontraron productos</h2>
+    <p *ngIf="terminoBusqueda || categoriaSeleccionada">
+      Intenta cambiar los filtros de búsqueda
+    </p>
+    <p *ngIf="!terminoBusqueda && !categoriaSeleccionada">
+      No hay productos disponibles en este momento
+    </p>
+    <ion-button 
+      fill="outline" 
+      color="primary" 
+      (click)="limpiarFiltros()">
+      <ion-icon name="refresh" slot="start"></ion-icon>
+      Limpiar Filtros
+    </ion-button>
+  </div>
+
+  <!-- Información de resultados -->
+  <div *ngIf="!cargando && productosFiltrados.length > 0" class="resultados-info">
+    <ion-text color="medium">
+      <small>{{ productosFiltrados.length }} producto{{ productosFiltrados.length !== 1 ? 's' : '' }} encontrado{{ productosFiltrados.length !== 1 ? 's' : '' }}</small>
+    </ion-text>
+  </div>
+</ion-content>

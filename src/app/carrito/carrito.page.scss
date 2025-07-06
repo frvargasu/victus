@@ -1,0 +1,31 @@
+.carrito-total {
+  text-align: right;
+  padding: 12px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--ion-text-color);
+}
+
+.vaciar-btn {
+  margin-top: 10px;
+  --background: var(--ion-color-danger);
+  --border-radius: 8px;
+  --box-shadow: 0 2px 8px rgba(var(--ion-color-danger-rgb),0.2);
+}
+
+// Estilos para items del carrito
+ion-item {
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid var(--ion-color-step-100);
+}
+
+ion-label {
+  color: var(--ion-text-color);
+}
+
+ion-button {
+  --color: var(--ion-color-primary-contrast);
+}

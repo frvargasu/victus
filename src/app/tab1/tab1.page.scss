@@ -1,0 +1,189 @@
+ion-card {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  border-radius: 18px;
+  transition: transform 0.2s;
+  margin-bottom: 18px;
+  --background: var(--ion-card-background);
+  --color: var(--ion-text-color);
+  
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--ion-text-color);
+  text-align: center;
+}
+
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img {
+  border-radius: 12px 12px 0 0;
+  background: var(--ion-color-step-100);
+  padding: 12px;
+}
+
+ion-button {
+  margin-top: 10px;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 8px rgba(var(--ion-color-primary-rgb),0.10);
+}
+
+// Estilos adicionales para modo oscuro
+@media (prefers-color-scheme: dark) {
+  ion-card {
+    box-shadow: 0 4px 16px rgba(255,255,255,0.05);
+    
+    &:hover {
+      box-shadow: 0 8px 24px rgba(255,255,255,0.10);
+    }
+  }
+}
+
+// Estilos para el segment - mejor contraste en modo oscuro
+ion-segment {
+  --background: var(--ion-color-step-100);
+  border-radius: 8px;
+  padding: 4px;
+  
+  ion-segment-button {
+    --color: var(--ion-text-color);
+    --color-checked: var(--ion-color-primary-contrast);
+    --color-hover: var(--ion-color-primary);
+    --background-checked: var(--ion-color-primary);
+    --background-hover: var(--ion-color-step-150);
+    --border-radius: 6px;
+    --indicator-color: var(--ion-color-primary);
+    --ripple-color: var(--ion-color-primary);
+    
+    min-height: 40px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    ion-label {
+      color: var(--ion-text-color);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    &.segment-button-checked {
+      ion-label {
+        color: var(--ion-color-primary-contrast);
+      }
+    }
+  }
+}
+
+// Estilos específicos para el container de filtros
+.filtros-segment-container {
+  background: var(--ion-background-color);
+  border-bottom: 1px solid var(--ion-color-step-150);
+  
+  ion-select {
+    --color: var(--ion-text-color);
+    --placeholder-color: var(--ion-color-medium);
+  }
+}
+
+// Mejoras para modo oscuro
+@media (prefers-color-scheme: dark) {
+  ion-segment {
+    --background: var(--ion-color-step-200);
+    border: 1px solid var(--ion-color-step-300);
+    
+    ion-segment-button {
+      --color: var(--ion-text-color);
+      --color-checked: var(--ion-color-primary-contrast);
+      --background-hover: var(--ion-color-step-250);
+      
+      ion-label {
+        color: var(--ion-text-color);
+      }
+      
+      &.segment-button-checked {
+        ion-label {
+          color: var(--ion-color-primary-contrast);
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+// Estilos para el header - compatible con modo oscuro
+.header-toolbar {
+  --background: var(--ion-toolbar-background);
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-color-step-150);
+  min-height: 60px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  .header-toolbar {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.api-store-btn {
+  margin-left: 8px;
+}
+
+.logo-img {
+  height: 100px;
+  display: block;
+  margin-left: 1px;
+}
+
+.cart-container {
+  display: flex;
+  align-items: center;
+}
+
+.cart-icon-container {
+  position: relative;
+  margin-right: 32px;
+}
+
+.cart-icon {
+  font-size: 2.2em;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  font-size: 0.8em;
+}
+
+// Estilos para el banner promocional
+.banner-promocional {
+  background: var(--ion-color-primary);
+  padding: 14px 0;
+  text-align: center;
+  margin: 14px 0 0 0;
+  
+  span {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--ion-color-primary-contrast);
+    letter-spacing: 1px;
+  }
+}

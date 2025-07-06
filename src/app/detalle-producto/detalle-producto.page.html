@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Detalle del Producto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarDetalle()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <div style="width: 90%; max-width: 400px; background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+      <ion-img [src]="producto?.imagen" style="width: 100%; height: auto; border-radius: 8px;"></ion-img>
+      <h2 style="text-align: center; margin: 16px 0;">{{ producto?.nombre }}</h2>
+      <p style="text-align: center; font-size: 1.2em; color: #007aff;">Precio: {{ producto?.precio | currencyClp }}</p>
+      <p style="text-align: center; font-size: 1em; color: #333; margin: 12px 0;">{{ producto?.descripcion }}</p>
+      
+      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+        <ion-button 
+          (click)="agregarProducto(producto)" 
+          expand="block" 
+          color="primary"
+          style="width: 180px;">
+          <ion-icon name="cart" slot="start"></ion-icon>
+          Agregar al Carrito
+        </ion-button>
+        
+        <ion-button 
+          (click)="toggleFavorito()" 
+          fill="outline"
+          [color]="esFavorito ? 'danger' : 'medium'"
+          style="width: 60px;">
+          <ion-icon [name]="esFavorito ? 'heart' : 'heart-outline'"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

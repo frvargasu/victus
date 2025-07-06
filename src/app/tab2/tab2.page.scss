@@ -1,0 +1,21 @@
+ion-item {
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
+  --border-radius: 8px;
+  margin: 8px 0;
+  transition: transform 0.3s ease-in-out;
+  border: 1px solid var(--ion-color-step-100);
+}
+
+ion-item:hover {
+  transform: scale(1.02);
+}
+
+// Estilos adicionales para mejorar contraste
+ion-label {
+  color: var(--ion-text-color);
+}
+
+ion-icon {
+  color: var(--ion-color-primary);
+}
