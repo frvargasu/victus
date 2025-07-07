@@ -43,13 +43,13 @@ Esta actividad implementa un sistema completo de configuraciones multiplataforma
 
 ### Verificación del Entorno
 ```bash
-# Verificar configuración del entorno de desarrollo
+# Verifica configuraciones del entorno de desarrollo
 npm run env:check
 
-# Ejecutar pruebas multiplataforma
+# Ejecuta pruebas multiplataforma
 npm run env:test
 
-# Verificar y probar todo el entorno
+# Verifica y probar todo el entorno
 npm run multiplatform:test
 ```
 
@@ -58,7 +58,7 @@ npm run multiplatform:test
 # Build para múltiples plataformas
 npm run multiplatform:build
 
-# Configurar entorno completo
+# Configura entorno completo
 npm run multiplatform:setup
 ```
 
