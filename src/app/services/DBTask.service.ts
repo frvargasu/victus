@@ -95,6 +95,71 @@ export class DBTaskService {
     }
   }
 
+  async getUserId(username: string): Promise<number | null> {
+    if (this.isBrowser()) {
+      const user = this.mockDatabase.users.find(
+        (u) => u.username === username
+      );
+      return user ? user.id : null;
+    } else {
+      if (!this.dbInstance) {
+        throw new Error('La instancia de la base de datos no está inicializada.');
+      }
+
+      const query = `SELECT id FROM users WHERE username = ? LIMIT 1`;
+      try {
+        const result = await this.dbInstance.executeSql(query, [username]);
+        if (result.rows.length > 0) {
+          return result.rows.item(0).id;
+        } else {
+          return null;
+        }
+      } catch (error) {
+        console.error('Error al obtener el ID del usuario:', error);
+        return null;
+      }
+    }
+  }
+
+  async createUser(username: string, password: string): Promise<number> {
+    if (this.isBrowser()) {
+      // Check for duplicate user
+      const existingUser = this.mockDatabase.users.find(
+        (u) => u.username === username
+      );
+      if (existingUser) {
+        throw new Error('El usuario ya existe');
+      }
+
+      // Create new user
+      const newUser = {
+        id: Date.now(), // Simple ID generation for mock
+        username,
+        password
+      };
+      this.mockDatabase.users.push(newUser);
+      console.log('Usuario creado correctamente en el navegador:', newUser);
+      return newUser.id;
+    } else {
+      if (!this.dbInstance) {
+        throw new Error('La instancia de la base de datos no está inicializada.');
+      }
+
+      const query = `INSERT INTO users (username, password) VALUES (?, ?)`;
+      try {
+        const result = await this.dbInstance.executeSql(query, [username, password]);
+        console.log('Usuario creado correctamente con ID:', result.insertId);
+        return result.insertId;
+      } catch (error) {
+        console.error('Error al crear el usuario:', error);
+        if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
+          throw new Error('El usuario ya existe');
+        }
+        throw new Error('Error al crear el usuario');
+      }
+    }
+  }
+
   async registerSession(userId: number): Promise<void> {
     if (this.isBrowser()) {
       this.mockDatabase.sessions.push({ id: Date.now(), userId, active: 1 });
