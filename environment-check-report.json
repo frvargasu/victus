@@ -1,0 +1,133 @@
+{
+  "timestamp": "2025-07-07T01:17:15.899Z",
+  "platform": "win32",
+  "nodeVersion": "v22.13.0",
+  "environment": {
+    "JAVA_HOME": {
+      "value": "C:\\Users\\frvar\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.15.6-hotspot\\",
+      "exists": true,
+      "length": 77
+    },
+    "ANDROID_SDK_ROOT": {
+      "value": null,
+      "exists": false,
+      "length": 0
+    },
+    "ANDROID_HOME": {
+      "value": "C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk",
+      "exists": true,
+      "length": 40
+    },
+    "PATH": {
+      "value": "C:\\Users\\frvar\\ionic_app\\victus\\node_modules\\.bin;C:\\Users\\frvar\\ionic_app\\node_modules\\.bin;C:\\Users\\frvar\\node_modules\\.bin;C:\\Users\\node_modules\\.bin;C:\\node_modules\\.bin;C:\\Users\\frvar\\AppData\\Roaming\\npm\\node_modules\\npm\\node_modules\\@npmcli\\run-script\\lib\\node-gyp-bin;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\tools;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\tools\\bin;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\platform-tools;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\cmdline-tools\\latest\\bin;C:\\Users\\frvar\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.15.6-hotspot\\bin;C:\\Users\\frvar\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\frvar\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\frvar\\AppData\\Roaming\\npm;C:\\Program Files\\JetBrains\\IntelliJ IDEA Community Edition 2025.1.2\\bin;;C:\\Users;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\tools;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\tools\\bin;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\platform-tools;C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\cmdline-tools\\latest\\bin;;c:\\Users\\frvar\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand",
+      "exists": true,
+      "length": 1526
+    },
+    "NODE_ENV": {
+      "value": null,
+      "exists": false,
+      "length": 0
+    },
+    "CAPACITOR_PLATFORM": {
+      "value": null,
+      "exists": false,
+      "length": 0
+    },
+    "IONIC_ENV": {
+      "value": null,
+      "exists": false,
+      "length": 0
+    }
+  },
+  "tools": {
+    "java": {
+      "installed": true,
+      "version": "",
+      "command": "java -version"
+    },
+    "ionic": {
+      "installed": true,
+      "version": "7.2.0",
+      "command": "ionic version"
+    },
+    "capacitor": {
+      "installed": true,
+      "version": "7.4.1",
+      "command": "npx cap --version"
+    }
+  },
+  "paths": {
+    "javaHome": {
+      "path": "C:\\Users\\frvar\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.15.6-hotspot\\",
+      "exists": false,
+      "executable": "C:\\Users\\frvar\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-17.0.15.6-hotspot\\bin\\java"
+    },
+    "androidSDK": {
+      "path": "C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk",
+      "exists": true,
+      "tools": {
+        "adb": {
+          "path": "C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb",
+          "exists": true
+        },
+        "gradle": {
+          "path": "C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\tools\\gradle",
+          "exists": false
+        },
+        "build-tools": {
+          "path": "C:\\Users\\frvar\\AppData\\Local\\Android\\Sdk\\build-tools",
+          "exists": true
+        }
+      }
+    },
+    "projectFiles": {
+      "package.json": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\package.json"
+      },
+      "capacitor.config.ts": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\capacitor.config.ts"
+      },
+      "ionic.config.json": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\ionic.config.json"
+      },
+      "angular.json": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\angular.json"
+      },
+      "src/environments/environment.ts": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\src\\environments\\environment.ts"
+      },
+      "src/environments/environment.prod.ts": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\src\\environments\\environment.prod.ts"
+      },
+      "src/environments/environment.staging.ts": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\src\\environments\\environment.staging.ts"
+      }
+    },
+    "capacitorPlatforms": {
+      "android": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\android"
+      },
+      "ios": {
+        "exists": true,
+        "path": "C:\\Users\\frvar\\ionic_app\\victus\\ios"
+      }
+    }
+  },
+  "recommendations": [
+    "Verificar que JAVA_HOME apunte a una instalación válida de Java"
+  ],
+  "summary": {
+    "score": 11,
+    "totalChecks": 12,
+    "percentage": 92,
+    "status": "GOOD"
+  }
+}

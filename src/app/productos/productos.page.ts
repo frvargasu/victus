@@ -41,6 +41,7 @@ export class ProductosPage implements OnInit {
   }
 
   private async inicializarDatos(): Promise<void> {
+    console.time('⏱️ Tiempo total inicialización de datos');
     try {
       // Mostrar loading
       const loading = await this.loadingController.create({
@@ -50,14 +51,18 @@ export class ProductosPage implements OnInit {
       await loading.present();
 
       // Cargar productos y categorías en paralelo
+      console.time('⏱️ Carga paralela de productos y categorías');
       const [productos, categorias] = await Promise.all([
         this.apiService.obtenerProductos(),
         this.apiService.obtenerCategorias()
       ]);
+      console.timeEnd('⏱️ Carga paralela de productos y categorías');
 
+      console.time('⏱️ Asignación de datos a variables');
       this.productos = productos;
       this.productosFiltrados = productos;
       this.categorias = categorias;
+      console.timeEnd('⏱️ Asignación de datos a variables');
 
       await loading.dismiss();
       
@@ -65,7 +70,11 @@ export class ProductosPage implements OnInit {
         await this.mostrarAlerta('Sin productos', 'No se pudieron cargar los productos. Verifica tu conexión a internet.');
       }
 
+      console.timeEnd('⏱️ Tiempo total inicialización de datos');
+      console.log(`📊 Productos cargados: ${productos.length}, Categorías: ${categorias.length}`);
+
     } catch (error) {
+      console.timeEnd('⏱️ Tiempo total inicialización de datos');
       console.error('Error al inicializar datos:', error);
       await this.toastService.mostrarToastError('Error al cargar datos iniciales');
     }
@@ -73,15 +82,26 @@ export class ProductosPage implements OnInit {
 
   // Buscar productos
   async buscarProductos(event: any): Promise<void> {
+    const termino = event.target.value || '';
+    console.time(`🔍 Búsqueda de productos: "${termino}"`);
+    
     try {
-      this.terminoBusqueda = event.target.value || '';
+      this.terminoBusqueda = termino;
       
       if (this.terminoBusqueda.trim() === '') {
+        console.time('📋 Restaurar lista completa');
         this.productosFiltrados = this.productos;
+        console.timeEnd('📋 Restaurar lista completa');
       } else {
+        console.time('🔍 Llamada API buscarProductos');
         this.productosFiltrados = await this.apiService.buscarProductos(this.terminoBusqueda);
+        console.timeEnd('🔍 Llamada API buscarProductos');
       }
+      
+      console.timeEnd(`🔍 Búsqueda de productos: "${termino}"`);
+      console.log(`📊 Resultados de búsqueda: ${this.productosFiltrados.length} productos`);
     } catch (error) {
+      console.timeEnd(`🔍 Búsqueda de productos: "${termino}"`);
       console.error('Error al buscar productos:', error);
       await this.toastService.mostrarToastError('Error en la búsqueda');
     }
@@ -89,15 +109,26 @@ export class ProductosPage implements OnInit {
 
   // Filtrar por categoría
   async filtrarPorCategoria(event: any): Promise<void> {
+    const categoria = event.target.value;
+    console.time(`📂 Filtrado por categoría: "${categoria}"`);
+    
     try {
-      this.categoriaSeleccionada = event.target.value;
+      this.categoriaSeleccionada = categoria;
       
       if (this.categoriaSeleccionada === '') {
+        console.time('📋 Obtener todos los productos');
         this.productosFiltrados = await this.apiService.obtenerProductos();
+        console.timeEnd('📋 Obtener todos los productos');
       } else {
+        console.time('📂 Llamada API obtenerProductosPorCategoria');
         this.productosFiltrados = await this.apiService.obtenerProductosPorCategoria(this.categoriaSeleccionada);
+        console.timeEnd('📂 Llamada API obtenerProductosPorCategoria');
       }
+      
+      console.timeEnd(`📂 Filtrado por categoría: "${categoria}"`);
+      console.log(`📊 Productos filtrados por categoría: ${this.productosFiltrados.length} productos`);
     } catch (error) {
+      console.timeEnd(`📂 Filtrado por categoría: "${categoria}"`);
       console.error('Error al filtrar por categoría:', error);
       await this.toastService.mostrarToastError('Error al filtrar productos');
     }
@@ -136,18 +167,30 @@ export class ProductosPage implements OnInit {
 
   // Toggle favorito
   async toggleFavorito(producto: Producto): Promise<void> {
+    console.time(`⭐ Toggle favorito: "${producto.nombre}"`);
+    
     try {
+      console.time('📦 Obtener favoritos del storage');
       const favoritos = await this.storageService.obtenerFavoritos();
+      console.timeEnd('📦 Obtener favoritos del storage');
+      
       const esFavorito = favoritos.some(f => f.id === producto.id);
 
       if (esFavorito) {
+        console.time('❌ Quitar favorito');
         await this.storageService.quitarFavorito(producto.nombre);
+        console.timeEnd('❌ Quitar favorito');
         await this.toastService.mostrarToastFavorito(producto.nombre, false);
       } else {
+        console.time('✅ Agregar favorito');
         await this.storageService.agregarFavorito(producto);
+        console.timeEnd('✅ Agregar favorito');
         await this.toastService.mostrarToastFavorito(producto.nombre, true);
       }
+      
+      console.timeEnd(`⭐ Toggle favorito: "${producto.nombre}"`);
     } catch (error) {
+      console.timeEnd(`⭐ Toggle favorito: "${producto.nombre}"`);
       console.error('Error al manejar favorito:', error);
       await this.toastService.mostrarToastError('Error al actualizar favoritos');
     }
@@ -155,10 +198,16 @@ export class ProductosPage implements OnInit {
 
   // Verificar si es favorito
   async esFavorito(producto: Producto): Promise<boolean> {
+    console.time(`🔍 Verificar si es favorito: "${producto.nombre}"`);
+    
     try {
       const favoritos = await this.storageService.obtenerFavoritos();
-      return favoritos.some(f => f.id === producto.id);
+      const resultado = favoritos.some(f => f.id === producto.id);
+      
+      console.timeEnd(`🔍 Verificar si es favorito: "${producto.nombre}"`);
+      return resultado;
     } catch (error) {
+      console.timeEnd(`🔍 Verificar si es favorito: "${producto.nombre}"`);
       console.error('Error al verificar favorito:', error);
       return false;
     }
@@ -171,10 +220,14 @@ export class ProductosPage implements OnInit {
 
   // Refrescar datos
   async refrescarDatos(event: any): Promise<void> {
+    console.time('🔄 Refrescar datos');
+    
     try {
       await this.apiService.obtenerProductos();
       await this.toastService.mostrarToastExito('Productos actualizados');
+      console.timeEnd('🔄 Refrescar datos');
     } catch (error) {
+      console.timeEnd('🔄 Refrescar datos');
       console.error('Error al refrescar:', error);
       await this.toastService.mostrarToastError('Error al refrescar datos');
     } finally {

@@ -3,7 +3,50 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  
+  // Configuración de API
+  apiUrl: 'http://localhost:3000/api',
+  apiTimeout: 10000,
+  
+  // Configuración de logging
+  enableLogging: true,
+  logLevel: 'debug',
+  
+  // Configuración multiplataforma
+  platform: {
+    name: 'development',
+    web: {
+      enablePWA: true,
+      serviceWorker: false
+    },
+    android: {
+      enableDebugging: true,
+      allowMixedContent: true,
+      enableHardwareAcceleration: true
+    },
+    ios: {
+      enableDebugging: true,
+      allowsLinkPreview: false,
+      scrollEnabled: true
+    }
+  },
+  
+  // Configuración de características
+  features: {
+    geolocation: true,
+    camera: true,
+    notifications: true,
+    biometric: false,
+    analytics: false
+  },
+  
+  // Configuración de base de datos
+  database: {
+    name: 'victus_dev',
+    version: 1,
+    enableSQLiteEncryption: false
+  }
 };
 
 /*

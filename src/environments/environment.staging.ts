@@ -1,28 +1,28 @@
 export const environment = {
-  production: true,
+  production: false,
   
   // Configuración de API
-  apiUrl: 'https://api.victus.app/v1',
-  apiTimeout: 15000,
+  apiUrl: 'https://staging-api.victus.app/v1',
+  apiTimeout: 12000,
   
   // Configuración de logging
-  enableLogging: false,
-  logLevel: 'error',
+  enableLogging: true,
+  logLevel: 'info',
   
   // Configuración multiplataforma
   platform: {
-    name: 'production',
+    name: 'staging',
     web: {
       enablePWA: true,
       serviceWorker: true
     },
     android: {
-      enableDebugging: false,
+      enableDebugging: true,
       allowMixedContent: false,
       enableHardwareAcceleration: true
     },
     ios: {
-      enableDebugging: false,
+      enableDebugging: true,
       allowsLinkPreview: false,
       scrollEnabled: true
     }
@@ -39,7 +39,7 @@ export const environment = {
   
   // Configuración de base de datos
   database: {
-    name: 'victus_prod',
+    name: 'victus_staging',
     version: 1,
     enableSQLiteEncryption: true
   }

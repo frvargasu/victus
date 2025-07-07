@@ -68,3 +68,18 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Keystore files - NEVER commit these!
+android/keystore.properties
+android/keystores/*.keystore
+android/keystores/*.jks
+*.keystore
+*.jks
+
+# APK verification reports
+android/verification-report-*.json
+
+# Build outputs
+/dist
+*.apk
+*.aab
