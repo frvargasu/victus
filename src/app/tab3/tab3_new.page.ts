@@ -88,8 +88,17 @@ export class Tab3Page implements OnInit {
     }
 
     try {
-      await this.mostrarToast('Registro exitoso. Por favor inicia sesión.');
-      this.toggleRegister();
+      const userCreated = await this.dbTaskService.createUser(
+        this.registerData.email, 
+        this.registerData.password
+      );
+      
+      if (userCreated) {
+        await this.mostrarToast('Registro exitoso. Por favor inicia sesión.');
+        this.toggleRegister();
+      } else {
+        await this.mostrarError('El usuario ya existe');
+      }
     } catch (error) {
       console.error('Error durante el registro:', error);
       await this.mostrarError('Error al registrar usuario');

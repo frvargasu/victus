@@ -142,6 +142,54 @@ export class DBTaskService {
     }
   }
 
+  async createUser(username: string, password: string): Promise<boolean> {
+    if (this.isBrowser()) {
+      // Check if user already exists
+      const existingUser = this.mockDatabase.users.find(
+        (u) => u.username === username
+      );
+      
+      if (existingUser) {
+        console.log('Usuario ya existe en mockDatabase:', username);
+        return false;
+      }
+      
+      // Create new user
+      const newUser = {
+        id: Date.now(),
+        username,
+        password
+      };
+      
+      this.mockDatabase.users.push(newUser);
+      console.log('Usuario creado correctamente en mockDatabase:', username);
+      return true;
+    } else {
+      if (!this.dbInstance) {
+        throw new Error('La instancia de la base de datos no está inicializada.');
+      }
+
+      // Check if user already exists
+      const checkQuery = `SELECT * FROM users WHERE username = ? LIMIT 1`;
+      try {
+        const checkResult = await this.dbInstance.executeSql(checkQuery, [username]);
+        if (checkResult.rows.length > 0) {
+          console.log('Usuario ya existe en la base de datos:', username);
+          return false;
+        }
+        
+        // Create new user
+        const insertQuery = `INSERT INTO users (username, password) VALUES (?, ?)`;
+        await this.dbInstance.executeSql(insertQuery, [username, password]);
+        console.log('Usuario creado correctamente en la base de datos:', username);
+        return true;
+      } catch (error) {
+        console.error('Error al crear el usuario:', error);
+        return false;
+      }
+    }
+  }
+
   async listUsers(): Promise<void> {
     if (!this.dbInstance) {
       throw new Error('La instancia de la base de datos no está inicializada.');
