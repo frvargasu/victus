@@ -102,9 +102,7 @@ export class Tab2Page implements OnInit {
   }
 
   verDetalle(producto: Producto) {
-    this.router.navigate(['/detalle-producto'], {
-      state: { producto }
-    });
+    this.router.navigate(['/detalle-producto', encodeURIComponent(producto.nombre)]);
   }
 
   trackByFn(index: number, producto: Producto): any {

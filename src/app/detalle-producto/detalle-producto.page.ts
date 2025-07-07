@@ -27,10 +27,18 @@ export class DetalleProductoPage implements OnInit {
 
   async ngOnInit() {
     const nombreProducto = this.route.snapshot.paramMap.get('nombre');
+    console.log('Parámetro "nombre" obtenido:', nombreProducto);
+    
     if (nombreProducto) {
-      this.producto = this.productosService.obtenerProductoPorNombre(nombreProducto);
+      const nombreDecodificado = decodeURIComponent(nombreProducto);
+      console.log('Nombre decodificado:', nombreDecodificado);
+      
+      // Buscar en productos locales y API
+      this.producto = await this.productosService.obtenerProductoPorNombreCombinado(nombreDecodificado);
+      console.log('Producto encontrado:', this.producto);
+      
       if (!this.producto) {
-        console.error(`No se encontró un producto con el nombre: ${nombreProducto}`);
+        console.error(`No se encontró un producto con el nombre: ${nombreDecodificado}`);
       } else {
         await this.verificarSiEsFavorito();
       }

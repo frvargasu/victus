@@ -41,7 +41,9 @@
     "multiplatform:setup": "npm run env:check && npm run android:setup",
     "activity:build": "node scripts/activity-apk-build.js",
     "activity:zip": "node scripts/generate-activity-zip.js",
-    "activity:complete": "npm run activity:build && npm run activity:zip"
+    "activity:complete": "npm run activity:build && npm run activity:zip",
+    "playstore:docx": "node scripts/generate-playstore-docx.js",
+    "playstore:complete": "npm run playstore:docx && echo 'Ficha de Play Store generada exitosamente'"
   },
   "private": true,
   "dependencies": {
@@ -70,6 +72,7 @@
     "@ionic/storage-angular": "^4.0.0",
     "animate.css": "^4.1.1",
     "cordova-sqlite-storage": "^7.0.0",
+    "docx": "^9.5.1",
     "ionicons": "^7.0.0",
     "leaflet": "^1.9.4",
     "rxjs": "~7.8.0",

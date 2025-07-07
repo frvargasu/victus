@@ -83,6 +83,29 @@ export class ProductosService {
     return this.productos.find((producto) => producto.nombre === nombre);
   }
 
+  // Método para buscar producto por nombre en la API
+  async obtenerProductoPorNombreAPI(nombre: string): Promise<Producto | undefined> {
+    try {
+      const productos = await this.obtenerProductosAPIAsync();
+      return productos.find(producto => producto.nombre === nombre);
+    } catch (error) {
+      console.error('Error al buscar producto por nombre en la API:', error);
+      return undefined;
+    }
+  }
+
+  // Método combinado para buscar en ambas fuentes
+  async obtenerProductoPorNombreCombinado(nombre: string): Promise<Producto | undefined> {
+    // Primero buscar en productos locales
+    const productoLocal = this.obtenerProductoPorNombre(nombre);
+    if (productoLocal) {
+      return productoLocal;
+    }
+    
+    // Si no se encuentra, buscar en la API
+    return await this.obtenerProductoPorNombreAPI(nombre);
+  }
+
   // Métodos para API externa
   obtenerProductosAPI(): Observable<Producto[]> {
     return this.http.get<ProductoAPI[]>(this.apiUrl).pipe(

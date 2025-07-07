@@ -215,7 +215,7 @@ export class ProductosPage implements OnInit {
 
   // Ver detalle del producto
   verDetalle(producto: Producto): void {
-    this.router.navigate(['/detalle-producto', producto.nombre]);
+    this.router.navigate(['/detalle-producto', encodeURIComponent(producto.nombre)]);
   }
 
   // Refrescar datos

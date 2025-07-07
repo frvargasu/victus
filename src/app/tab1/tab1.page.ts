@@ -146,9 +146,8 @@ export class Tab1Page implements OnInit {
   }
 
   verDetalle(producto: Producto) {
-    this.router.navigate(['/detalle-producto'], {
-      state: { producto }
-    });
+    console.log('Navegando a detalle del producto:', producto.nombre);
+    this.router.navigate(['/detalle-producto', encodeURIComponent(producto.nombre)]);
   }
 
   private async mostrarError(mensaje: string) {
