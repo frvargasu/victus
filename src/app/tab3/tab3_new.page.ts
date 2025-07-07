@@ -71,7 +71,12 @@ export class Tab3Page implements OnInit {
       if (isValid) {
         this.isLoggedIn = true;
         await this.mostrarToast('Inicio de sesión exitoso');
-        await this.dbTaskService.registerSession(1);
+        
+        // Get the user ID for session registration
+        const userId = await this.dbTaskService.getUserId(this.loginData.email);
+        if (userId) {
+          await this.dbTaskService.registerSession(userId);
+        }
       } else {
         await this.mostrarError('Credenciales incorrectas');
       }
@@ -88,11 +93,21 @@ export class Tab3Page implements OnInit {
     }
 
     try {
+      // Create the user using the email as username
+      const userId = await this.dbTaskService.createUser(
+        this.registerData.email,
+        this.registerData.password
+      );
+      
       await this.mostrarToast('Registro exitoso. Por favor inicia sesión.');
       this.toggleRegister();
     } catch (error) {
       console.error('Error durante el registro:', error);
-      await this.mostrarError('Error al registrar usuario');
+      if (error instanceof Error && error.message === 'El usuario ya existe') {
+        await this.mostrarError('El usuario ya existe. Por favor inicia sesión.');
+      } else {
+        await this.mostrarError('Error al registrar usuario');
+      }
     }
   }
 
