@@ -15,13 +15,15 @@ victus/
 │   │   │   └── productos.page.spec.ts          # Pruebas unitarias
 │   │   └── services/
 │   │       └── storage.service.spec.ts         # Pruebas de servicio
-├── e2e/
-│   ├── src/
-│   │   ├── productos.po.ts                     # Page Object Model
-│   │   └── productos.e2e-spec.ts               # Pruebas E2E
-│   └── tsconfig.json                           # Configuración TypeScript
+├── cypress/
+│   ├── e2e/
+│   │   ├── tabs.cy.js                          # Pruebas E2E Cypress
+│   │   ├── spec.cy.ts                          # Pruebas E2E Cypress
+│   │   └── tabs-principales.cy.js              # Pruebas E2E Cypress
+│   └── support/
+│       └── e2e.js                              # Soporte Cypress
 ├── karma.conf.js                               # Configuración Karma
-├── protractor.conf.js                          # Configuración Protractor
+├── cypress.config.ts                           # Configuración Cypress
 └── package.json                                # Scripts y dependencias
 ```
 
@@ -32,15 +34,15 @@ victus/
 - **Configuración**: `karma.conf.js`
 - **Cobertura**: Habilitada con reportes HTML
 
-#### 2. **Protractor** (Pruebas E2E)
-- **Propósito**: Simular interacciones de usuario reales
-- **Configuración**: `protractor.conf.js`
-- **Modo**: Headless para CI/CD
+#### 2. **Cypress** (Pruebas E2E)
+- **Propósito**: Simular interacciones de usuario reales en el navegador
+- **Configuración**: `cypress.config.ts`
+- **Modo**: Headless o interactivo
 
-#### 3. **Page Object Model**
-- **Archivo**: `productos.po.ts`
-- **Propósito**: Encapsular elementos y acciones de la página
-- **Beneficios**: Mantenimiento fácil y reutilización
+#### 3. **Estructura Cypress**
+- **Carpeta**: `cypress/e2e/`
+- **Archivos**: `*.cy.ts` y `*.cy.js`
+- **Beneficios**: Pruebas rápidas, recarga automática, fácil depuración
 
 ### 📊 Tipos de Pruebas Implementadas
 
@@ -63,14 +65,10 @@ victus/
 - ✅ **Pruebas de rendimiento**
 - ✅ **Casos edge**
 
-#### 🌐 Pruebas E2E (`productos.e2e-spec.ts`)
-- ✅ **Carga inicial de datos**
-- ✅ **Funcionalidad de búsqueda**
-- ✅ **Filtrado por categoría**
-- ✅ **Funcionalidad del carrito**
-- ✅ **Gestión de favoritos**
-- ✅ **Actualización de datos**
-- ✅ **Limpieza de filtros**
+#### 🌐 Pruebas E2E (Cypress)
+- ✅ **Navegación por tabs**
+- ✅ **Verificación de elementos clave en cada página**
+- ✅ **Simulación de flujos de usuario**
 
 ### 🚀 Scripts de Ejecución
 
@@ -82,8 +80,8 @@ npm run test:coverage           # Con cobertura
 npm run test:ci                 # Para CI/CD
 
 # Pruebas E2E
-npm run e2e                     # Ejecutar E2E
-npm run e2e:dev                 # Modo desarrollo
+npx cypress run                 # Ejecutar E2E en modo headless
+npx cypress open                # Ejecutar E2E en modo interactivo
 ```
 
 ### 📈 Mediciones de Rendimiento
@@ -145,19 +143,24 @@ module.exports = function (config) {
 };
 ```
 
-#### Protractor Configuration
-```javascript
-// protractor.conf.js
-exports.config = {
-  allScriptsTimeout: 11000,
-  specs: ['./e2e/src/**/*.e2e-spec.ts'],
-  capabilities: {
-    browserName: 'chrome',
-    chromeOptions: {
-      args: ['--headless', '--no-sandbox']
-    }
+
+#### Cypress Configuration
+```typescript
+// cypress.config.ts
+import { defineConfig } from 'cypress';
+
+export default defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:8100'
   },
-};
+  component: {
+    devServer: {
+      framework: 'angular',
+      bundler: 'webpack',
+    },
+    specPattern: '**/*.cy.{js,ts}'
+  }
+});
 ```
 
 ### 📝 Documentación de Pruebas
@@ -245,13 +248,14 @@ coverageReporter: {
 4. **Optimizar tiempos**: Basándose en métricas de rendimiento
 5. **Expandir cobertura**: Agregar más componentes y servicios
 
+
 ### 📋 Checklist de Implementación
 
 - ✅ Configuración de Karma
-- ✅ Configuración de Protractor
+- ✅ Configuración de Cypress
 - ✅ Pruebas unitarias de ProductosPage
 - ✅ Pruebas de StorageService
-- ✅ Pruebas E2E con Page Object Model
+- ✅ Pruebas E2E con Cypress
 - ✅ Mediciones de rendimiento
 - ✅ Scripts de ejecución
 - ✅ Documentación técnica

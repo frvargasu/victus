@@ -45,7 +45,9 @@ div.animate__animated {
   margin: 14px 0 0 0;
 }
 
-span {
+
+// Solo aplica estilos globales a span si tiene una clase específica
+.span-global {
   font-size: 1.1em;
   font-weight: 500;
   color: #fff;
@@ -161,5 +163,126 @@ ion-select {
   // Mejorar contraste de texto secundario
   .text-secondary {
     color: var(--ion-color-step-600) !important;
+  }
+}
+
+// Estilos globales para ActionSheet
+ion-action-sheet {
+  --background: #ffffff;
+  --color: #1a1a1a;
+  
+  .action-sheet-group {
+    background: #ffffff !important;
+  }
+  
+  .action-sheet-button {
+    --color: #1a1a1a !important;
+    --background: #ffffff !important;
+    color: #1a1a1a !important;
+    
+    ion-icon {
+      color: #1a1a1a !important;
+    }
+  }
+  
+  .action-sheet-title {
+    color: #1a1a1a !important;
+  }
+  
+  .action-sheet-sub-title {
+    color: var(--ion-color-primary) !important;
+  }
+}
+
+// Estilos específicos para ActionSheet de métodos de pago
+ion-action-sheet.payment-options-action-sheet {
+  --background: #ffffff !important;
+  --color: #1a1a1a !important;
+  
+  .action-sheet-group {
+    background: #ffffff !important;
+  }
+  
+  .action-sheet-button {
+    --color: #1a1a1a !important;
+    --background: #ffffff !important;
+    color: #1a1a1a !important;
+    background: #ffffff !important;
+    
+    ion-icon {
+      color: #1a1a1a !important;
+    }
+  }
+  
+  .action-sheet-title {
+    color: #1a1a1a !important;
+    font-weight: 600;
+    background: #ffffff !important;
+  }
+  
+  .action-sheet-sub-title {
+    color: var(--ion-color-primary) !important;
+    font-weight: 500;
+    background: #ffffff !important;
+  }
+}
+
+// Estilos para modo oscuro
+@media (prefers-color-scheme: dark) {
+  ion-action-sheet {
+    --background: #2d2d2d;
+    --color: #ffffff;
+    
+    .action-sheet-group {
+      background: #2d2d2d !important;
+    }
+    
+    .action-sheet-button {
+      --color: #ffffff !important;
+      --background: #2d2d2d !important;
+      color: #ffffff !important;
+      
+      ion-icon {
+        color: #ffffff !important;
+      }
+    }
+    
+    .action-sheet-title {
+      color: #ffffff !important;
+    }
+    
+    .action-sheet-sub-title {
+      color: var(--ion-color-primary) !important;
+    }
+  }
+  
+  ion-action-sheet.payment-options-action-sheet {
+    --background: #2d2d2d !important;
+    --color: #ffffff !important;
+    
+    .action-sheet-group {
+      background: #2d2d2d !important;
+    }
+    
+    .action-sheet-button {
+      --color: #ffffff !important;
+      --background: #2d2d2d !important;
+      color: #ffffff !important;
+      background: #2d2d2d !important;
+      
+      ion-icon {
+        color: #ffffff !important;
+      }
+    }
+    
+    .action-sheet-title {
+      color: #ffffff !important;
+      background: #2d2d2d !important;
+    }
+    
+    .action-sheet-sub-title {
+      color: var(--ion-color-primary) !important;
+      background: #2d2d2d !important;
+    }
   }
 }

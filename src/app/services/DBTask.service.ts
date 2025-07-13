@@ -67,10 +67,14 @@ export class DBTaskService {
   }
 
   async validateUser(username: string, password: string): Promise<boolean> {
+    console.log('Validando usuario:', username);
+    
     if (this.isBrowser()) {
+      console.log('Usando mock database, usuarios disponibles:', this.mockDatabase.users);
       const user = this.mockDatabase.users.find(
         (u) => u.username === username && u.password === password
       );
+      console.log('Usuario encontrado:', user);
       return !!user;
     } else {
       if (!this.dbInstance) {
@@ -173,6 +177,57 @@ export class DBTaskService {
       }
     } catch (error) {
       console.error('Error al listar las sesiones:', error);
+    }
+  }
+
+  async createUser(username: string, password: string): Promise<boolean> {
+    if (this.isBrowser()) {
+      // Verificar si el usuario ya existe
+      const existingUser = this.mockDatabase.users.find(
+        (u) => u.username === username
+      );
+      if (existingUser) {
+        console.log('Usuario ya existe en mock database');
+        return false;
+      }
+      
+      // Crear nuevo usuario
+      const newUser = {
+        id: this.mockDatabase.users.length + 1,
+        username: username,
+        password: password
+      };
+      this.mockDatabase.users.push(newUser);
+      console.log('Usuario creado en mock database:', newUser);
+      return true;
+    } else {
+      if (!this.dbInstance) {
+        throw new Error('La instancia de la base de datos no está inicializada.');
+      }
+
+      // Verificar si el usuario ya existe
+      const checkQuery = `SELECT * FROM users WHERE username = ? LIMIT 1`;
+      try {
+        const checkResult = await this.dbInstance.executeSql(checkQuery, [username]);
+        if (checkResult.rows.length > 0) {
+          console.log('El usuario ya existe');
+          return false;
+        }
+      } catch (error) {
+        console.error('Error al verificar usuario existente:', error);
+        return false;
+      }
+
+      // Crear nuevo usuario
+      const insertQuery = `INSERT INTO users (username, password) VALUES (?, ?)`;
+      try {
+        const result = await this.dbInstance.executeSql(insertQuery, [username, password]);
+        console.log('Usuario creado exitosamente:', result);
+        return true;
+      } catch (error) {
+        console.error('Error al crear usuario:', error);
+        return false;
+      }
     }
   }
 }

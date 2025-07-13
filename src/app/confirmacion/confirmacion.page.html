@@ -1,0 +1,183 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/carrito"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+      Confirmar Pedido
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="confirmacion-container">
+    
+    <!-- Header de confirmación -->
+    <div class="confirmacion-header">
+      <h1>¡Ya casi terminamos!</h1>
+      <p>Revisa los detalles de tu pedido antes de confirmar</p>
+    </div>
+
+    <!-- Resumen del pedido -->
+    <ion-card class="pedido-resumen">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="basket-outline" slot="start"></ion-icon>
+          Resumen del Pedido
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="productos-resumen" *ngIf="productos && productos.length > 0">
+          <div class="producto-item" *ngFor="let producto of productos">
+            <img [src]="producto.imagen" [alt]="producto.nombre" class="producto-img">
+            <div class="producto-info">
+              <h4>{{ producto.nombre }}</h4>
+              <p>{{ producto.cantidad || 0 }} x {{ producto.precio | currencyClp }}</p>
+            </div>
+            <div class="producto-total">
+              {{ (producto.precio * (producto.cantidad || 0)) | currencyClp }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="totales-resumen">
+          <div class="linea-total">
+            <span>Subtotal</span>
+            <span>{{ subtotal | currencyClp }}</span>
+          </div>
+          <div class="linea-total descuento" *ngIf="descuento > 0">
+            <span>Descuento</span>
+            <span>-{{ descuento | currencyClp }}</span>
+          </div>
+          <div class="linea-total">
+            <span>Envío</span>
+            <span>{{ costoEnvio | currencyClp }}</span>
+          </div>
+          <hr>
+          <div class="linea-total total">
+            <span><strong>Total</strong></span>
+            <span><strong>{{ total | currencyClp }}</strong></span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Método de pago -->
+    <ion-card class="metodo-pago">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon [name]="getPaymentIcon()" slot="start"></ion-icon>
+          Método de Pago
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="pago-info">
+          <h3>{{ getPaymentTitle() }}</h3>
+          <p>{{ getPaymentDescription() }}</p>
+          
+          <ion-button 
+            fill="outline" 
+            size="small" 
+            (click)="cambiarMetodoPago()">
+            <ion-icon name="swap-horizontal" slot="start"></ion-icon>
+            Cambiar método
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información de entrega -->
+    <ion-card class="entrega-info">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          Información de Entrega
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="entrega-detalles">
+          <div class="detalle-linea">
+            <ion-icon name="person-outline"></ion-icon>
+            <div>
+              <strong>Nombre</strong>
+              <p>{{ nombreCompleto || 'Usuario' }}</p>
+            </div>
+          </div>
+          
+          <div class="detalle-linea">
+            <ion-icon name="home-outline"></ion-icon>
+            <div>
+              <strong>Dirección</strong>
+              <p>{{ direccion || 'Dirección por definir' }}</p>
+            </div>
+          </div>
+          
+          <div class="detalle-linea">
+            <ion-icon name="call-outline"></ion-icon>
+            <div>
+              <strong>Teléfono</strong>
+              <p>{{ telefono || 'Teléfono por definir' }}</p>
+            </div>
+          </div>
+          
+          <div class="detalle-linea">
+            <ion-icon name="time-outline"></ion-icon>
+            <div>
+              <strong>Tiempo estimado</strong>
+              <p>{{ getTiempoEntrega() }}</p>
+            </div>
+          </div>
+        </div>
+        
+        <ion-button 
+          fill="outline" 
+          expand="block" 
+          (click)="editarDatosEntrega()">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Editar datos de entrega
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botones de acción -->
+    <div class="acciones-confirmacion">
+      <ion-button 
+        expand="block" 
+        size="large"
+        color="medium"
+        fill="outline"
+        (click)="volverAlCarrito()">
+        <ion-icon name="arrow-back" slot="start"></ion-icon>
+        Volver al carrito
+      </ion-button>
+      
+      <ion-button 
+        expand="block" 
+        size="large"
+        color="success"
+        (click)="confirmarPedido()"
+        [disabled]="!puedeConfirmar()">
+        <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+        Confirmar Pedido
+        <ion-badge slot="end" color="light">{{ total | currencyClp }}</ion-badge>
+      </ion-button>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="info-adicional">
+      <div class="info-item">
+        <ion-icon name="shield-checkmark" color="success"></ion-icon>
+        <span>Compra 100% segura</span>
+      </div>
+      <div class="info-item">
+        <ion-icon name="return-up-back" color="primary"></ion-icon>
+        <span>Devoluciones hasta 30 días</span>
+      </div>
+      <div class="info-item">
+        <ion-icon name="headset" color="warning"></ion-icon>
+        <span>Soporte 24/7</span>
+      </div>
+    </div>
+  </div>
+</ion-content>

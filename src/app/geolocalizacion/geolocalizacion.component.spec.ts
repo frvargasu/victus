@@ -17,6 +17,8 @@ describe('GeolocalizacionComponent', () => {
   }));
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    // Evita error de Leaflet: "Map container not found"
+    spyOn(component as any, 'ngAfterViewInit').and.callFake(() => {});
+    expect(!!component).toBeTrue();
   });
 });

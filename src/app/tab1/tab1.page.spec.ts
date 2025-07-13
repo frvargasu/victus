@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Storage } from '@ionic/storage-angular';
 import { IonicModule } from '@ionic/angular';
 
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
@@ -12,7 +13,10 @@ describe('Tab1Page', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [Tab1Page],
-      imports: [IonicModule.forRoot(), ExploreContainerComponentModule]
+      imports: [IonicModule.forRoot(), ExploreContainerComponentModule],
+      providers: [
+        { provide: Storage, useValue: {} }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Tab1Page);
@@ -21,6 +25,6 @@ describe('Tab1Page', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(!!component).toBeTrue();
   });
 });

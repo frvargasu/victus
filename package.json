@@ -43,7 +43,9 @@
     "activity:zip": "node scripts/generate-activity-zip.js",
     "activity:complete": "npm run activity:build && npm run activity:zip",
     "playstore:docx": "node scripts/generate-playstore-docx.js",
-    "playstore:complete": "npm run playstore:docx && echo 'Ficha de Play Store generada exitosamente'"
+    "playstore:complete": "npm run playstore:docx && echo 'Ficha de Play Store generada exitosamente'",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -90,6 +92,7 @@
     "@angular/compiler-cli": "^19.0.0",
     "@angular/language-service": "^19.0.0",
     "@capacitor/cli": "^7.3.0",
+    "@cypress/schematic": "^3.0.0",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/google.maps": "^3.58.1",
     "@types/jasmine": "~5.1.0",
@@ -97,6 +100,7 @@
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "archiver": "^7.0.1",
+    "cypress": "latest",
     "eslint": "^9.16.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",

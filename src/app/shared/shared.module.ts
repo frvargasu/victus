@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { CurrencyClpPipe } from '../pipes/currency-clp.pipe';
 
 @NgModule({
-  declarations: [CurrencyClpPipe],
-  imports: [CommonModule],
+  declarations: [],
+  imports: [CommonModule, CurrencyClpPipe],
   exports: [CurrencyClpPipe]
 })
 export class SharedModule {}

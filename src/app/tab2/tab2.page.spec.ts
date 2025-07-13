@@ -1,3 +1,4 @@
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
@@ -12,7 +13,10 @@ describe('Tab2Page', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [Tab2Page],
-      imports: [IonicModule.forRoot(), ExploreContainerComponentModule]
+      imports: [IonicModule.forRoot(), ExploreContainerComponentModule],
+      providers: [
+        { provide: SQLite, useValue: {} }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Tab2Page);
@@ -21,6 +25,6 @@ describe('Tab2Page', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(!!component).toBeTrue();
   });
 });

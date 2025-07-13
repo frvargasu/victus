@@ -128,16 +128,16 @@ describe('ProductosPage', () => {
    */
   describe('Creación del componente', () => {
     it('should create', () => {
-      expect(component).toBeTruthy();
+      expect(!!component).toBeTrue();
     });
 
     it('should initialize with empty arrays', () => {
       expect(component.productos).toEqual([]);
       expect(component.productosFiltrados).toEqual([]);
       expect(component.categorias).toEqual([]);
-      expect(component.categoriaSeleccionada).toBe('');
-      expect(component.terminoBusqueda).toBe('');
-      expect(component.cargando).toBe(false);
+      expect(component.categoriaSeleccionada).toEqual('');
+      expect(component.terminoBusqueda).toEqual('');
+      expect(component.cargando).toEqual(false);
     });
   });
 
@@ -202,7 +202,7 @@ describe('ProductosPage', () => {
       console.timeEnd('🧪 Test: Búsqueda exitosa');
       
       expect(apiServiceSpy.buscarProductos).toHaveBeenCalledWith('camiseta');
-      expect(component.terminoBusqueda).toBe('camiseta');
+      expect(component.terminoBusqueda).toEqual('camiseta');
       expect(component.productosFiltrados).toEqual(mockProductos.slice(0, 1));
     });
 
@@ -250,7 +250,7 @@ describe('ProductosPage', () => {
       console.timeEnd('🧪 Test: Filtrado por categoría');
       
       expect(apiServiceSpy.obtenerProductosPorCategoria).toHaveBeenCalledWith('ropa');
-      expect(component.categoriaSeleccionada).toBe('ropa');
+      expect(component.categoriaSeleccionada).toEqual('ropa');
       expect(component.productosFiltrados).toEqual(mockProductos.slice(0, 2));
     });
 
@@ -312,7 +312,7 @@ describe('ProductosPage', () => {
       
       console.timeEnd('🧪 Test: Verificar favorito');
       
-      expect(isFavorite).toBe(true);
+      expect(isFavorite).toBeTrue();
     });
   });
 
@@ -382,8 +382,8 @@ describe('ProductosPage', () => {
       
       console.timeEnd('🧪 Test: Limpiar filtros');
       
-      expect(component.terminoBusqueda).toBe('');
-      expect(component.categoriaSeleccionada).toBe('');
+      expect(component.terminoBusqueda).toEqual('');
+      expect(component.categoriaSeleccionada).toEqual('');
       expect(component.productosFiltrados).toEqual(mockProductos);
     });
 
@@ -396,7 +396,7 @@ describe('ProductosPage', () => {
       
       console.timeEnd('🧪 Test: Error de imagen');
       
-      expect(event.target.src).toBe('assets/img/placeholder.jpg');
+      expect(event.target.src).toEqual('assets/img/placeholder.jpg');
     });
 
     it('should track products by id', () => {
@@ -408,7 +408,7 @@ describe('ProductosPage', () => {
       
       console.timeEnd('🧪 Test: Track by producto');
       
-      expect(trackValue).toBe(producto.id);
+      expect(trackValue).toEqual(producto.id);
     });
   });
 

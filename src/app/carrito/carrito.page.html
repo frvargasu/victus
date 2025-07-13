@@ -3,7 +3,10 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Carrito</ion-title>
+    <ion-title>
+      <ion-icon name="cart" slot="start"></ion-icon>
+      Mi Carrito
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button 
         *ngIf="obtenerCarrito().length > 0" 
@@ -17,33 +20,294 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="obtenerCarrito().length > 0; else vacio">
-    <ion-list>
-      <ion-item *ngFor="let producto of obtenerCarrito()">
-        <ion-thumbnail slot="start">
-          <img [src]="producto.imagen" />
-        </ion-thumbnail>
-        <ion-label>
-          <h2>{{ producto.nombre }}</h2>
-          <p>${{ producto.precio }} x {{ producto.cantidad }}</p>
-        </ion-label>
-        <ion-button size="small" (click)="quitarProducto(producto.nombre)">-</ion-button>
-        <ion-button size="small" (click)="agregarProducto(producto)">+</ion-button>
-      </ion-item>
-    </ion-list>
-    <div class="carrito-total">
-     <p> Total: ${{ obtenerTotal() }}</p>
+  <div *ngIf="obtenerCarrito().length > 0; else vacio" class="carrito-container">
+    
+    <!-- Header del carrito -->
+    <div class="carrito-header">
+      <h2>{{ obtenerCarrito().length }} artículo(s) en tu carrito</h2>
     </div>
-    <ion-button expand="block" color="success" class="pagar-btn">
-      <ion-icon name="card-outline" slot="start"></ion-icon>
-      Pagar
-    </ion-button>
+
+    <!-- Lista de productos -->
+    <div class="productos-lista">
+      <ion-card *ngFor="let producto of obtenerCarrito(); trackBy: trackByProducto" class="producto-card">
+        <ion-card-content>
+          <div class="producto-item">
+            
+            <!-- Imagen del producto -->
+            <div class="producto-imagen">
+              <img [src]="producto.imagen" [alt]="producto.nombre" />
+              
+              <!-- Badge de oferta -->
+              <ion-badge 
+                *ngIf="tieneDescuento(producto)" 
+                class="oferta-badge" 
+                color="success">
+                {{ getDescuentoProducto(producto) }}% OFF
+              </ion-badge>
+              
+              <!-- Indicador de stock -->
+              <div class="stock-indicator" [class.low-stock]="isLowStock(producto)">
+                <ion-icon 
+                  [name]="isLowStock(producto) ? 'warning' : 'checkmark-circle'" 
+                  [color]="isLowStock(producto) ? 'warning' : 'success'">
+                </ion-icon>
+              </div>
+            </div>
+            
+            <!-- Información del producto -->
+            <div class="producto-info">
+              <div class="producto-header">
+                <h3 class="texto-principal">{{ producto.nombre }}</h3>
+                <div class="producto-badges">
+                  <ion-badge *ngIf="isProductoNuevo(producto)" color="primary" class="badge-nuevo">
+                    <ion-icon name="sparkles" slot="start"></ion-icon>
+                    Nuevo
+                  </ion-badge>
+                  <ion-badge *ngIf="isProductoPopular(producto)" color="warning" class="badge-popular">
+                    <ion-icon name="star" slot="start"></ion-icon>
+                    Popular
+                  </ion-badge>
+                </div>
+              </div>
+              
+              <p class="producto-descripcion texto-secundario">{{ producto.descripcion || 'Producto de calidad premium' }}</p>
+              
+              <div class="producto-detalles">
+                <div class="precio-unitario">
+                  <span class="precio">{{ producto.precio | currencyClp }}</span>
+                  <span class="unidad texto-secundario">c/u</span>
+                </div>
+                
+                <!-- Información adicional -->
+                <div class="info-extra">
+                  <span class="envio-info" *ngIf="tieneEnvioGratis(producto)">
+                    <ion-icon name="checkmark-circle" color="success"></ion-icon>
+                    Envío gratis
+                  </span>
+                  <span class="stock-info" [class.low-stock]="isLowStock(producto)">
+                    <ion-icon [name]="isLowStock(producto) ? 'warning' : 'cube'" [color]="isLowStock(producto) ? 'warning' : 'medium'"></ion-icon>
+                    {{ getStockMessage(producto) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Controles de cantidad -->
+            <div class="cantidad-controls">
+              <ion-button 
+                size="small" 
+                fill="outline" 
+                color="medium"
+                (click)="quitarProducto(producto.nombre)"
+                [disabled]="(producto.cantidad || 0) <= 1">
+                <ion-icon name="remove" slot="icon-only"></ion-icon>
+              </ion-button>
+              
+              <span class="cantidad-display texto-principal">{{ producto.cantidad || 0 }}</span>
+              
+              <ion-button 
+                size="small" 
+                fill="outline" 
+                color="primary"
+                (click)="agregarProducto(producto)">
+                <ion-icon name="add" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+            
+            <!-- Subtotal y eliminar -->
+            <div class="producto-actions">
+              <div class="subtotal">
+                <strong class="texto-principal">{{ (producto.precio * (producto.cantidad || 0)) | currencyClp }}</strong>
+                <span class="ahorro" *ngIf="tieneDescuento(producto)">
+                  Ahorras {{ getAhorroProducto(producto) | currencyClp }}
+                </span>
+              </div>
+              <ion-button 
+                fill="clear" 
+                color="danger" 
+                size="small"
+                (click)="eliminarProducto(producto.nombre)">
+                <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Resumen del pedido -->
+    <ion-card class="resumen-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="receipt-outline" slot="start"></ion-icon>
+          Resumen del pedido
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="resumen-linea">
+          <span class="texto-principal">Subtotal ({{ obtenerCantidadTotal() }} artículos)</span>
+          <span class="texto-principal">{{ obtenerSubtotal() | currencyClp }}</span>
+        </div>
+        <div class="resumen-linea" *ngIf="obtenerDescuento() > 0">
+          <span class="texto-principal">
+            <ion-icon name="pricetag" color="success" slot="start"></ion-icon>
+            Descuento aplicado
+          </span>
+          <span class="descuento">-{{ obtenerDescuento() | currencyClp }}</span>
+        </div>
+        <div class="resumen-linea">
+          <span class="texto-principal">
+            <ion-icon name="car" color="primary" slot="start"></ion-icon>
+            Envío
+          </span>
+          <span class="envio" [class.gratis]="obtenerCostoEnvio() === 0">
+            {{ obtenerCostoEnvio() === 0 ? 'GRATIS' : (obtenerCostoEnvio() | currencyClp) }}
+          </span>
+        </div>
+        <div class="resumen-linea" *ngIf="obtenerImpuestos() > 0">
+          <span class="texto-principal">
+            <ion-icon name="calculator" color="medium" slot="start"></ion-icon>
+            IVA (19%)
+          </span>
+          <span class="texto-principal">{{ obtenerImpuestos() | currencyClp }}</span>
+        </div>
+        <hr>
+        <div class="resumen-linea total">
+          <span><strong class="texto-principal">Total</strong></span>
+          <span><strong class="texto-principal">{{ obtenerTotal() | currencyClp }}</strong></span>
+        </div>
+        
+        <!-- Información de ahorro -->
+        <div class="ahorro-total" *ngIf="obtenerAhorroTotal() > 0">
+          <div class="ahorro-badge">
+            <ion-icon name="trophy" color="warning"></ion-icon>
+            <span>¡Ahorras {{ obtenerAhorroTotal() | currencyClp }} en total!</span>
+          </div>
+        </div>
+        
+        <!-- Información adicional -->
+        <div class="info-adicional">
+          <p class="envio-info" [class.activo]="obtenerSubtotal() > 25000">
+            <ion-icon [name]="obtenerSubtotal() > 25000 ? 'checkmark-circle' : 'information-circle'" 
+                      [color]="obtenerSubtotal() > 25000 ? 'success' : 'medium'"></ion-icon>
+            {{ obtenerSubtotal() > 25000 ? 'Envío gratis incluido' : 'Envío gratis en compras sobre $25.000' }}
+          </p>
+          <p class="garantia-info">
+            <ion-icon name="shield-checkmark" color="primary"></ion-icon>
+            Garantía de satisfacción o devolución
+          </p>
+          <p class="seguridad-info">
+            <ion-icon name="lock-closed" color="success"></ion-icon>
+            Pago 100% seguro y protegido
+          </p>
+        </div>
+        
+        <!-- Código de descuento -->
+        <div class="codigo-descuento">
+          <ion-button 
+            fill="outline" 
+            size="small" 
+            (click)="mostrarCodigoDescuento()"
+            [disabled]="tieneCodigoAplicado">
+            <ion-icon name="pricetag" slot="start"></ion-icon>
+            {{ tieneCodigoAplicado ? 'Código aplicado' : 'Aplicar código de descuento' }}
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botones de acción -->
+    <div class="acciones-container">
+      <div class="acciones-secundarias">
+        <ion-button 
+          fill="clear" 
+          size="small"
+          color="medium"
+          (click)="guardarParaLuego()">
+          <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+          Guardar para más tarde
+        </ion-button>
+        
+        <ion-button 
+          fill="clear" 
+          size="small"
+          color="medium"
+          (click)="compartirCarrito()">
+          <ion-icon name="share-social-outline" slot="start"></ion-icon>
+          Compartir carrito
+        </ion-button>
+      </div>
+      
+      <ion-button 
+        expand="block" 
+        size="large"
+        color="secondary"
+        fill="outline"
+        class="continuar-comprando-btn"
+        (click)="continuarComprando()">
+        <ion-icon name="storefront-outline" slot="start"></ion-icon>
+        Continuar comprando
+      </ion-button>
+      
+      <ion-button 
+        expand="block" 
+        size="large"
+        color="success" 
+        class="pagar-btn"
+        (click)="mostrarOpcionesPago()">
+        <ion-icon name="card-outline" slot="start"></ion-icon>
+        Proceder al pago
+        <ion-badge slot="end" color="light">{{ obtenerTotal() | currencyClp }}</ion-badge>
+      </ion-button>
+      
+      <!-- Métodos de pago aceptados -->
+      <div class="metodos-pago-info">
+        <p class="texto-secundario">Métodos de pago aceptados:</p>
+        <div class="metodos-iconos">
+          <ion-icon name="card" color="primary"></ion-icon>
+          <ion-icon name="logo-paypal" color="medium"></ion-icon>
+          <ion-icon name="wallet" color="success"></ion-icon>
+          <ion-icon name="cash" color="warning"></ion-icon>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Estado vacío mejorado -->
   <ng-template #vacio>
-    <div>
-      <ion-icon name="cart-outline"></ion-icon>
-      <div>¡Tu carrito está vacío!</div>
-      <div>Agrega productos para comenzar tu compra.</div>
+    <div class="carrito-vacio">
+      <div class="vacio-container">
+        <div class="vacio-icon">
+          <ion-icon name="cart-outline"></ion-icon>
+        </div>
+        <h2 class="texto-principal">¡Tu carrito está vacío!</h2>
+        <p class="texto-secundario">Descubre nuestros productos y comienza tu compra.</p>
+        
+        <div class="vacio-beneficios">
+          <div class="beneficio">
+            <ion-icon name="flash" color="warning"></ion-icon>
+            <span class="texto-secundario">Envío rápido</span>
+          </div>
+          <div class="beneficio">
+            <ion-icon name="shield-checkmark" color="success"></ion-icon>
+            <span class="texto-secundario">Compra segura</span>
+          </div>
+          <div class="beneficio">
+            <ion-icon name="return-up-back" color="primary"></ion-icon>
+            <span class="texto-secundario">Devoluciones fáciles</span>
+          </div>
+        </div>
+        
+        <ion-button 
+          expand="block" 
+          size="large"
+          color="primary"
+          class="explorar-btn"
+          (click)="explorarProductos()">
+          <ion-icon name="storefront" slot="start"></ion-icon>
+          Explorar productos
+        </ion-button>
+      </div>
     </div>
   </ng-template>
 </ion-content>

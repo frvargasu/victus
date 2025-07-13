@@ -63,6 +63,16 @@ export class CarritoService {
     }
   }
 
+  async eliminarProductoCompleto(nombre: string): Promise<void> {
+    const idx = this.carrito.findIndex(p => p.nombre === nombre);
+    if (idx > -1) {
+      const producto = this.carrito[idx];
+      this.carrito.splice(idx, 1);
+      await this.guardarCarritoEnStorage();
+      await this.toastService.mostrarToastInfo(`${producto.nombre} eliminado del carrito`);
+    }
+  }
+
   obtenerCantidadTotal(): number {
     return this.carrito.reduce((acc, p) => acc + (p.cantidad || 0), 0);
   }

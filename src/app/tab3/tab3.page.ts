@@ -84,7 +84,13 @@ export class Tab3Page implements OnInit, AfterViewInit {
 
   // Métodos de autenticación
   async login() {
+    if (!this.loginData.email || !this.loginData.password) {
+      await this.mostrarError('Por favor completa todos los campos');
+      return;
+    }
+
     try {
+      console.log('Intentando iniciar sesión con:', this.loginData.email);
       const isValid = await this.dbTaskService.validateUser(
         this.loginData.email, 
         this.loginData.password
@@ -94,8 +100,10 @@ export class Tab3Page implements OnInit, AfterViewInit {
         this.isLoggedIn = true;
         await this.mostrarToast('Inicio de sesión exitoso');
         await this.dbTaskService.registerSession(1);
+        console.log('Inicio de sesión exitoso para:', this.loginData.email);
       } else {
         await this.mostrarError('Credenciales incorrectas');
+        console.log('Credenciales incorrectas para:', this.loginData.email);
       }
     } catch (error) {
       console.error('Error durante el login:', error);
@@ -110,8 +118,17 @@ export class Tab3Page implements OnInit, AfterViewInit {
     }
 
     try {
-      await this.mostrarToast('Registro exitoso. Por favor inicia sesión.');
-      this.toggleRegister();
+      const userCreated = await this.dbTaskService.createUser(
+        this.registerData.email,
+        this.registerData.password
+      );
+      
+      if (userCreated) {
+        await this.mostrarToast('Registro exitoso. Por favor inicia sesión.');
+        this.toggleRegister();
+      } else {
+        await this.mostrarError('El usuario ya existe o hubo un error al crear la cuenta');
+      }
     } catch (error) {
       console.error('Error durante el registro:', error);
       await this.mostrarError('Error al registrar usuario');
